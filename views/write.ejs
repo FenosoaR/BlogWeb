@@ -1,0 +1,23 @@
+<%- include('component/header') %>
+  <div class="content">
+    <div class="writepage">
+      <div class="form">
+       <form action="" method="post" enctype="multipart/form-data">
+          <input type="text" placeholder="Title" name="title" class="form-control">
+          <textarea name="content" id="" cols="" rows="10" class="form-control"></textarea>
+          <input type="file"  name="file" id='file ' class="form-control"/>
+          <input type="hidden" name="user" value="<%= user.id %>"> 
+          <button type="submit" class="form-control">Write</button>
+      </div>
+      <div class="menu">
+              <h4>Categories</h4>
+              <% for(item of categories){ %>
+                  <input type="radio" name="categories" value="<%= item.id %>"><span><%= item.name %> </span><br>
+              <% } %>  
+      </div>
+    </form>
+    </div>
+  </div>
+
+
+<%- include('component/footer') %>

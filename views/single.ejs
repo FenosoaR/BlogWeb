@@ -1,0 +1,91 @@
+<%- include('component/header') %>
+<div class="home-title">
+    <div class="black">
+      <h1>Single Post</h1>
+    </div> 
+  </div>
+<div class="pop-error singleError">
+    <% if(error) { %>
+        <span><%= error %></span><br>
+     <% } %>
+     <button class="ok">OK</button>
+</div>
+<div class="content"> 
+    <div class="postpost">
+        <div class="single-post">
+            <div class="single-image">
+                 <img src="/upload/<%= single.file %>"  alt="">
+            </div>
+    
+         <div class="user">
+             <div class="profil">
+                 <img src="/pdp/<%= single.User.pdp %>" alt="">
+             </div>
+             <h4><%= single.User.username %> </h4>
+         <div class="link-btn">
+             <% if(postlike){ %>
+                 <a href="/deleteLike/<%= single.id %>"><i class="fa fa-thumbs-down"></i></a> <%= nbLike %>
+             <% }else{ %>
+                 <a href="/addLike/<%= single.id %>"><i class="fa fa-thumbs-up"></i></a> <%= nbLike %>
+             <% } %>
+ 
+             <% if(user == single.User){ %>
+                 <a href="/updatePost/<%= single.id %>"><i class="fa fa-edit"></i></a>
+                 <a href="/removePost/<%= single.id %> "><i class="fa fa-trash"></i></a>
+             <% }else{ %>
+                 <span><a href="/updatePost/<%= single.id %>"><i class="fa fa-edit edit-Error"></i></a></span>
+                 <span><a href="/removePost/<%= single.id %> "><i class="fa fa-trash remove-Error"></i></a></span>
+             <% } %>
+             
+         </div>
+     </div>
+ 
+     <div class="post-article">
+         <h1><%= single.title %> </h1>
+         <p><%= single.content %> </p>
+ 
+     </div>
+ 
+ 
+     <div class="comment">
+         <form action="/postComment" method="post">
+             <input type="hidden" name="post" value="<%= single.id %>">
+              <input type="text" placeholder="Ajouter un commentaire" name="comment"><button type="submit"><i class="fa fa-send"></i></button>
+         </form>
+     </div>
+ 
+ 
+     <% for(item of comments){ %>
+         <div class="user-comment">
+             <img src="/pdp/<%= item.User.pdp %>" alt="">
+         </div>
+         <span class="username"><%= item.User.username %></span>
+         <p class="post-comment"><%= item.comment %></p>
+     <% } %>
+          </div>
+          <div class="other-post">
+            <h4>Other Post You May Like</h4>
+          
+                <% for(item of posts){ %>
+                    <div class="posts">
+                <div class="image">
+                    <img src="/upload/<%= item.file %>" alt="">
+                </div>
+                <div class="article">
+                    <h5>Lorem ipsum lorem ipsum</h5>
+                    <a href="/single/<%= item.id %>"><button class="read-more">Read More</button></a>
+                </div>
+            </div>
+                <% } %>
+                
+            
+          </div>
+    </div>
+      
+</div>
+              
+</div>
+
+
+ 
+<%- include('component/footer') %> 

@@ -1,0 +1,32 @@
+<div class="auth">
+    <div class="row">        
+        <div class="col-lg-12 col-lg-6 col-lg-4">           
+            <form action="" method="post" class="form-register">
+                <% if(error){ %>
+                    <div class="pop-error">
+                            <% for(item of error){ %>
+                                   <span><%= item %></span><br>
+                            <% } %>
+                            <button>Ok</button> 
+                    </div>
+                <% }%> 
+                <h1>Register</h1>                                   
+                <input  type="text" name='username' placeholder ='Username' />
+                <input  type="email"  name='email' placeholder ='Email'/>
+                <input type="password" name='password' placeholder ='Password' />
+                <input type="password" name='confirmation' placeholder ='Confirmation' />
+                <button class="register">Register</button>
+                <span>Do you have an account? <br /><a href="/login">Login</a> </span>
+            </form>
+        </div>
+    </div>
+ 
+</div>
+
+
+
+
+
+
+
+
