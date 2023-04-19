@@ -24,7 +24,8 @@
 }
 .auth input{
     padding: 10px;
-    border: none;
+    width: 100%;
+    border: 1px solid white;
     border-bottom : 1px solid lightgray;
 }
 .auth button{
@@ -43,7 +44,7 @@
     text-align: center;
     color: red;
 }
-.pop-error{
+/* .pop-error{
     position: absolute;
     width: 400px;
     padding: 20px;
@@ -54,10 +55,8 @@
     top: 80px;
     left: 10%;
     display: none;
-    /* opacity: 0; */
-    /* visibility: hidden; */
     animation: 0.5s ease-in-out scale;     
-}
+} */
 .pop-error span {
     font-size: 23px;
 }
@@ -374,4 +373,11 @@
     padding-right: 15px;
     border: 1px solid lightgrey;
     background-color: white;
+}
+.error{
+    /* border: 1px solid red; */
+    background-color: red;
+}
+.error-message{
+    color: red;
 }

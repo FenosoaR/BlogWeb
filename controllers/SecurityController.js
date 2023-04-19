@@ -4,9 +4,8 @@ const passport = require('passport')
 const path = require('path')
 
 const register = async(req, res) =>{
-    let error = [undefined]
-
-     return res.render('auth/register', {error})
+    
+     return res.render('auth/register' , {error : undefined})
 } 
 
 const postregister = async(req, res) =>{
@@ -48,7 +47,8 @@ const postregister = async(req, res) =>{
         return res.redirect('/login')
 
     }else{
-        // console.log(error);
+
+        console.log(error);
         return res.render('auth/register' , {error})
     }
     
