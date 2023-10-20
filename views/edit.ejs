@@ -1,23 +1,37 @@
 <%- include('component/header') %>
-  <div class="content">
-    <div class="writepage">
-      <div class="form">
-       <form action="" method="post" enctype="multipart/form-data">
-          <input type="text" placeholder="Title" name="title" class="form-control" value='<%= post.title %>'>
-          <textarea name="content" id="" cols="" rows="10" class="form-control" value='<%= post.content %>'><%= post.content %></textarea>
-          <input type="file"  name="file" id='file ' class="form-control"/>
+<div class="container">
+  <div class="row write">   
+      <div class="col-lg-8">
+        <form action="/edit" method="post" enctype="multipart/form-data">
           <input type="hidden" name="user" value="<%= user.id %>"> 
-          <button type="submit" class="form-control">Write</button>
+          <input type="hidden" name="id" value="<%= post.id %>"> 
+          <div class="form-group">
+                <input type="text" placeholder="Title" name="title" class="form-control" value='<%= post.title %>'>
+          </div>
+          <div class="form-group">
+                <textarea name="content" id="" cols="" rows="10" class="form-control" value='<%= post.content %>'><%= post.content %></textarea>
+          </div>
+          <div class="form-group">
+            <input type="file"  name="file" id='file' class="form-control"/>
+          </div>
+          <div class="form-group">
+               <button type="submit" class="form-control">Update</button>
+          </div>         
       </div>
-      <div class="menu">
-              <h4>Categories</h4>
-              <% for(item of categories){ %>
-                  <input type="radio" name="categories" value="<%= item.id %>"><span><%= item.name %> </span><br>
-              <% } %>  
+      <div class="col-lg-4">    
+        <div class="category">
+          <h4>Categories</h4>
+          <% for(item of categories){ %>
+            <div class="form-group">
+              <input type="radio" name="categories" value="<%= item.id %>">      <span><%= item.name %> </span>
+            </div>           
+          <% } %> 
+        </div>     
       </div>
     </form>
-    </div>
   </div>
+</div>
 
 
-<%- include('component/footer') %>
+
+

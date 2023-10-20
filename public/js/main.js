@@ -1,105 +1,156 @@
-const pop = document.querySelector('.pop')
-const profil = document.querySelector('.user-profil')
-const formRegister = document.querySelector('.form-register')
-const username = document.querySelector('#username')
-const email = document.querySelector('#email')
-const password = document.querySelector('#password')
-const confirmation = document.querySelector('#confirmation')
-const usernameError =  document.getElementById('username-error')
-const emailError =  document.getElementById('email-error')
-const passwordError =  document.getElementById('password-error')
-const confirmationError =  document.getElementById('confirmation-error')
-const btnRegister = document.querySelector('.btn-register')
+const popUser = document.querySelector('.pop-user')
+const userProfil = document.querySelector('.user-profil')
+const room = document.getElementById('room')
+const notificationLink = document.querySelector('.notification_link')
+const messageBar = document.getElementById('message_bar') 
+const nbNotif =  document.getElementById('nbNotif')
+const popError = document.querySelector('.pop-error')
+const errorMessage =document.getElementById('error-message')
+const closePopError =  document.querySelector('.close-pop-error')
+const quitter = document.querySelector('.fa-arrow-right')
+const file = document.querySelector('.ajoutPhoto')
+const popPhoto = document.querySelector('.pop-photo')
+const closePopPhoto = document.querySelector('.close-pop-photo')
+const modifprofil =  document.querySelector('.modif-profil')
+const btnProfil = document.querySelector('.btn-profil')
+const bars =  document.querySelectorAll('.fa-bars')
 
+if(bars != null){
 
-if(formRegister != null){
-    
-    formRegister.addEventListener('submit' , function(e){
-        e.preventDefault()
+    for(item of bars){
+        item.addEventListener('click' , function(e) {
 
-        if(!username.value){
-            usernameError.textContent = 'Le champ username est obligatoire.';
-            username.classList.add('error');
-        }else {
-            usernameError.textContent = '';
-            username.classList.remove('error');
-        }
-        if(!email.checkValidity()){
-            // checkValidity() methode en js si le champ est valide return boolen
-            emailError.textContent = 'Veuillez saisir une adresse e-mail valide.';
-            email.classList.add('error');
-        } else {
-            emailError.textContent = '';
-            email.classList.remove('error');
-        }
+            const PostId = e.target.id
+            const popBar = document.getElementById(`pop-bar-${PostId}`)
+            popBar.style.display = 'block'
+        })
+    }
+} 
 
-        if(password.value.length > 9 ){
-            passwordError.textContent = 'Votre mot de passe doit avoir 8 caractères';
-            password.classList.add('error');
-        }else {
-            passwordError.textContent = '';
-            password.classList.remove('error');
-        }
+if(errorMessage != null){ 
+       popError.style.display = 'block'
 
-        if(password.value != confirmation.value){
-            confirmationError.textContent = 'Votre mot de passe est incorrecte'
-            confirmation.classList.add('error')
-        }else{
-            confirmationError.textContent = ''
-            confirmation.classList.remove('error')
-        }
+       closePopError.addEventListener('click', function () {
+        popError.style.display = 'none';
+    });
+
+}
+
+if(userProfil != null){
+    userProfil.addEventListener('click' , function(e){     
+        popUser.style.display = 'block';
+    })   
+    quitter.addEventListener('click' , function(e){
+        popUser.style.display = 'none'
     })
 }
 
-if(profil != null){
-    profil.addEventListener('click' , function(e){
-        e.preventDefault()
-        pop.style.display = 'block'
+if(file!=null){
+    file.addEventListener('click' , function(e){
+        popPhoto.style.display = 'block'
+       
     })
-    
+    closePopPhoto.addEventListener('click', function(e){
+        popPhoto.style.display = 'none'
+    })
+  
 }
-// if(register != null){
-//     register.addEventListener('click' ,function(e){
-//         e.preventDefault()
-//         popError.style.display = 'block'
-//     })
-// }
 
-// $('#confirmPwd').on('change',function(){
-//     const rightPwd = $('#pwd').val()
-//     if ($(this).val() != rightPwd) {
-//         $('#pwdError').removeClass('d-none');
-//     } else {
-//         $('#pwdError').addClass('d-none');
-//     }
-// })
+if(btnProfil!=null){
+    btnProfil.addEventListener('click' , function (e){
+        modifprofil.style.display = 'block'
+    })
+}
 
-// // if(edit != null){
-// //     edit.addEventListener('click' , function(e){
-// //         e.preventDefault()
-// //         popError.style.display = 'block'
-// //         // console.log('okok');
-      
-// //     })
-// // }
+if(room != null){
 
-// if(remove != null){
-//     remove.addEventListener('click' , function(e){
-//         e.preventDefault()
-//         popError.style.display = 'block'
-//         // console.log('okok');
-      
-//     })
-// }
+    const socket = io();
+
+    let roomName = room.value
+
+    socket.emit('room' , roomName)
+
+    socket.on('follow', (user) => {
+
+                
+            notificationLink.style.color = 'red'
+            
+
+            const p = document.createElement('p')
+            p.innerText = user.username+' followed you '
+            messageBar.append(p)
+        
+    });
+
+    socket.emit('post_room' , roomName)
 
 
+    socket.on('new_post' , (user)=>{
 
-// if(ok != null){
-//     ok.addEventListener('click' , function(e){
-//         popError.style.display = 'none'
-//     })
-    
-// }
+        notificationLink.style.color = 'red'
+
+        const p = document.createElement('p')
+        p.innerText = user.username+' posted new article '
+        messageBar.append(p) 
+
+    })
+
+    socket.emit('like_room' , roomName)
+
+    socket.on('new_like' , (user)=>{
+
+        notificationLink.style.color = 'red'
+
+        const p = document.createElement('p')
+        p.innerText = user.username+' liked your post '
+        messageBar.append(p)     
+    })
+
+    socket.emit('comment_room' , roomName)
+
+    socket.on('new_like_comment' , (user)=>{
+
+        notificationLink.style.color = 'red'
+
+        const p = document.createElement('p')
+        p.innerText = user.username+' liked your comment '
+        messageBar.append(p)
+        
+    })
+
+}
+
+const popLike = document.querySelector('.pop-like')
+const likes = document.querySelector('.likes')
+const close = document.querySelector('.close')
+
+if(likes != null){
+    likes.addEventListener('click' , function(e){
+        popLike.style.display = 'block'
+    })
+}
+
+if(close != null){
+    close.addEventListener('click' , function(e){
+        popLike.style.display = 'none'
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -9,6 +9,7 @@ module.exports =(sequelize , datatype) =>{
         comment:{
             type:datatype.TEXT,
             allowNull:true
-        }
+        },
+        
     })
 }

@@ -1,0 +1,30 @@
+<%- include('component/header') %> 
+<div class="container-fluid">
+<div class="container">
+  <div class="row">
+    <% for(item of posts){ %>
+      <div class="col-lg-4 post">
+          <div class="card">
+            <img src="/upload/<%= item.file %>" alt="">
+          </div>
+          <h2><%= item.title %></h2>
+          <p><%= item.content %></p>
+          <a href="/single/<%= item.id %>"><button class="read-more">Read More</button></a> 
+      </div>
+      <% } %>
+  </div>
+</div>
+ 
+      <div class="pop">
+        <form action="/postphoto" method="post" enctype="multipart/form-data">
+          <input type="file" name="pdp">
+          <button type="submit">Ajouter une photo</button>
+        </form>
+      </div>
+
+
+
+
+
+
+

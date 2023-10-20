@@ -1,22 +1,51 @@
-const {Category , Posts} = require('../models')
+const {Category , Posts , Notification, Users} = require('../models')
+const {dateDePub} = require('../libs/datePub')
+
+Users.hasMany(Posts)
+Posts.belongsTo(Users)
 
 const homepage = async(req, res) => {
 
     if(req.user){
 
-        
         const categories = await Category.findAll()
-        const posts = await Posts.findAll({limit:5})
+        const posts = await Posts.findAll({ order: [['createdAt', 'DESC']],include: Users}, {limit : 6})
 
-        return res.render('homepage' , {categories , posts , user:req.user})
+        for(item of posts){
+            console.log(item.createdAt);
+        }
+
+        const date = new Date();
+
+        const yearNow = date.getFullYear()
+
+        let annee = []
+
+        for (let index = yearNow + 1  ; index > 2015 ; index--) {
+            annee.push(index)
+        
+        }
+        return res.render('homepage' , {categories , posts , user:req.user, dateDePub, annee})
 
     }else{
       
       
         const categories = await Category.findAll()
-        const posts = await Posts.findAll({limit:5})
+        const posts = await Posts.findAll({ order: [['createdAt', 'DESC']],include: Users}, {limit : 6})
 
-       return res.render('homepage' , {categories , posts , user:req.user})
+
+        const date = new Date();
+
+        const yearNow = date.getFullYear()
+
+        let annee = []
+
+        for (let index = yearNow + 1; index > 2015 ; index--) {
+                annee.push(index)
+            
+        }
+
+       return res.render('homepage' , {categories , posts , user:req.user, dateDePub, annee})
     }
     
     
@@ -43,7 +72,18 @@ const header = async (req, res) =>{
 
     const categories = await Category.findAll()
 
-    return res.render('component/header' , {categories ,user: req.user})
+    const notifications =  await Notification.findAll({where : {FollowedId : req.user.id}})
+    let nb_notif = notifications.length
+
+    // let annee = []
+    
+
+    // for (let index = 0; index < ; index++) {
+    //     const element = array[index];
+        
+    // }
+
+    return res.render('component/header' , {categories ,user: req.user , nb_notif})
 }
 
 

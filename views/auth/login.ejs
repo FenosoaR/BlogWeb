@@ -1,9 +1,38 @@
-<div class="auth">
-    <form action="" method="post">
-        <h1>Login</h1>
-        <input  type="email"  name='email' placeholder ='Email'/>
-        <input type="password" name='password' placeholder ='Password' />
-        <button>Login</button>
-        <span>Don't you have an account? <br /><a href="/register">Register</a> </span>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <div class="auth">
+                <h1>Connectez-vous!</h1>
+                <form action="" method="post">
+                    <% if(success != '') { %>
+                        <div class="alert alert-success">
+                            <%= success %>
+                        </div>
+                    <% } %>
+                    <div class="form-group">
+                        
+                        <input id="email" type="email"  name='email' placeholder ='Email' required  class="form-control"  />
+                    </div>
+                 
+                    <div class="form-group">
+                      
+                        <input type="password" name='password' id="password" placeholder ='Votre mot de passe' required class="form-control"  />
+                        
+                    </div>
+                    <div class="form-group">
+                        <a href="">Mot de passe oublié?</a>
+                    </div>
+                  
+                    
+                    <div class="form-group">
+                        <button class="form-control">Login</button>
+                    </div>           
+                    
+                    <span>Vous n'avez pas de compte? <br /><a href="/register">Creer un compte</a> </span>
+                </form>
+            </div>
+           
+
+        </div>
+    </div>
 </div>

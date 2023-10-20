@@ -1,91 +1,246 @@
-<%- include('component/header') %>
-<div class="home-title">
-    <div class="black">
-      <h1>Single Post</h1>
-    </div> 
-  </div>
+<%- include('component/header') %> 
+    <div class="container">
+        <div class="row" style="margin-top: 30px;">
+            <div class="col-lg-9">
+                <div class="single-post-img">
+                    <img src="/upload/<%= single.file %>"  alt="">
+                </div>
+
+                <div class="user">
+                    <div class="profil">
+                        <a href="/otherProfil/<%= single.User.id %>"><img src="/pdp/<%= single.User.pdp %>" alt=""></a> 
+                     </div>
+                     <h5><%= single.User.username %></h5>
+                     <div class="publier-le">
+                        <% if(differenceEnSecondes < 60){ %>
+
+                            <span class="publier">Publié il y a :<%= differenceEnSecondes %> secondes </span>
+                             
+                        <% }else if(differenceEnSecondes < 3600){ %> 
+
+                            <span class="publier">Publié il y a : <%= Math.floor(differenceEnSecondes / 60) %> minutes </span>
+
+                        <% } else if(differenceEnSecondes < 86400){ %>
+
+                            <span class="publier">Publié il y a : <%= Math.floor(differenceEnSecondes / 3600) %> heures </span>
+
+                        <% }else {%>
+                             <span class="publier">Publié le : <%= date_publication %> </span>
+                        <% } %>
+                     </div>
+                     <div class="icone">
+                        <% if(postlike){ %>
+                            <i class="fa fa-thumbs-down likepost "  id="<%= single.id %>"></i> 
+                         <% }else{ %>
+                             <i class="fa fa-thumbs-up likepost"  id="<%= single.id %>"></i> 
+                             
+                         <% } %>
+                         <span class="nblike"><%= nbLike %></span> 
+                         <span class="likes">Likes</span>
+                    </div>
+                </div>  
+                
+                <div class="single-post-title">
+                    <h1><%= single.title %></h1>
+                    <p><%= single.content %></p>
+                </div>
+
+                <input type="hidden" value="<%= user.id %>" id="user">
+                <input type="hidden" value="<%= single.User.id %>" id="userFollowed">
+
+                <div class="comment">
+                    <form action="/postComment" method="post">
+                        <input type="hidden" name="post" id="post" value="<%= single.id %>">
+                        <input type="text" placeholder="Ajouter un commentaire..." name="comment" ><button type="submit"><i class="fa fa-send"></i></button>
+                    </form>
+                </div> 
+              
+        
+                <% if(allComments.length > 0 ){ %>
+                    <% for(item of allComments) { %>                 
+                            <div class="user-comment-profil">
+                                <img src="/pdp/<%= item.User.pdp %>" alt="">
+                                <span class="username"><%= item.User.username %></span>
+                                <p class="post-comment"><%= item.dataValues.comment %></p>           
+                            </div>
+
+                            <div class="comment-like">
+                                <% if(item.liked == true ){ %>
+                                    <span class="likeComment blue" id="<%= item.dataValues.id %>">Like</span> 
+                                    <span class="likeCount-<%= item.dataValues.id %>"><%= item.nb_likes %></span> 
+                            <% } else { %>
+                                    <span class="likeComment" id="<%= item.dataValues.id %>">Like</span>
+                                    <span class="likeCount-<%= item.dataValues.id %>"><%= item.nb_likes %></span> 
+                            <% } %>
+                        </div>
+    
+                                
+                     <% } %>
+                <% } %>
+
+              
+    
+            </div>
+            <div class="col-lg-3">  
+                <h4 style="text-align: center;">Other Post You May Like</h4>                       
+                    <% for(item of posts){ %>  
+                        <div class="other-post-img">
+                            <img src="/upload/<%= item.file %>" alt="">              
+                        </div>       
+                        <div class="other-post-title">
+                            <h5><%= item.title %></h5>
+                            <a href="/single/<%= item.id %>"><button class="read-more">Read More</button></a> 
+                        </div>  
+                        <hr>
+                    <% } %>
+                   
+            </div>
+        </div>
+    </div>  
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="single-post-img">
+                    
+                </div>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+    </div>
+    <div class="pop-like">
+        <i class="fa fa-close close"></i>
+        <ul>
+            <% for(like of likes){ %>
+                 <li><%= like.User.username %></li>   
+            <% } %> 
+        </ul>
+    
+    </div>  
+
+
 <div class="pop-error singleError">
     <% if(error) { %>
         <span><%= error %></span><br>
-     <% } %>
-     <button class="ok">OK</button>
-</div>
-<div class="content"> 
-    <div class="postpost">
-        <div class="single-post">
-            <div class="single-image">
-                 <img src="/upload/<%= single.file %>"  alt="">
-            </div>
-    
-         <div class="user">
-             <div class="profil">
-                 <img src="/pdp/<%= single.User.pdp %>" alt="">
-             </div>
-             <h4><%= single.User.username %> </h4>
-         <div class="link-btn">
-             <% if(postlike){ %>
-                 <a href="/deleteLike/<%= single.id %>"><i class="fa fa-thumbs-down"></i></a> <%= nbLike %>
-             <% }else{ %>
-                 <a href="/addLike/<%= single.id %>"><i class="fa fa-thumbs-up"></i></a> <%= nbLike %>
-             <% } %>
- 
-             <% if(user == single.User){ %>
-                 <a href="/updatePost/<%= single.id %>"><i class="fa fa-edit"></i></a>
-                 <a href="/removePost/<%= single.id %> "><i class="fa fa-trash"></i></a>
-             <% }else{ %>
-                 <span><a href="/updatePost/<%= single.id %>"><i class="fa fa-edit edit-Error"></i></a></span>
-                 <span><a href="/removePost/<%= single.id %> "><i class="fa fa-trash remove-Error"></i></a></span>
-             <% } %>
-             
-         </div>
-     </div>
- 
-     <div class="post-article">
-         <h1><%= single.title %> </h1>
-         <p><%= single.content %> </p>
- 
-     </div>
- 
- 
-     <div class="comment">
-         <form action="/postComment" method="post">
-             <input type="hidden" name="post" value="<%= single.id %>">
-              <input type="text" placeholder="Ajouter un commentaire" name="comment"><button type="submit"><i class="fa fa-send"></i></button>
-         </form>
-     </div>
- 
- 
-     <% for(item of comments){ %>
-         <div class="user-comment">
-             <img src="/pdp/<%= item.User.pdp %>" alt="">
-         </div>
-         <span class="username"><%= item.User.username %></span>
-         <p class="post-comment"><%= item.comment %></p>
-     <% } %>
-          </div>
-          <div class="other-post">
-            <h4>Other Post You May Like</h4>
-          
-                <% for(item of posts){ %>
-                    <div class="posts">
-                <div class="image">
-                    <img src="/upload/<%= item.file %>" alt="">
-                </div>
-                <div class="article">
-                    <h5>Lorem ipsum lorem ipsum</h5>
-                    <a href="/single/<%= item.id %>"><button class="read-more">Read More</button></a>
-                </div>
-            </div>
-                <% } %>
+     <% } %>     
+</div> 
+
+<script src="/axios/dist/axios.min.js"></script>
+<script src="/client-dist/socket.io.min.js"></script>
+<script>
+
+    let socket = io()
+
+   
+    const likePost = document.querySelector('.likepost')
+    const Like = document.querySelector('.nblike')
+    const user = document.getElementById('user')
+    const userFollowed = document.getElementById('userFollowed') 
+   
+
+    if(likePost != null){
+
+        likePost.addEventListener('click' , function(e){
+
+            // console.log(e.target);
+            // console.log(e.target.nextElementSibling);
+
+                let postId = e.target.id 
+               
+
+                axios.get(`http://localhost:9000/like/${postId}`)
+                .then((res) =>{
                 
+                    if(res.data.message){
+
+                        
+                        likePost.classList.remove('fa-thumbs-up')
+                        likePost.classList.add('fa-thumbs-down')
+
+                       
+
+                        let userId = user.value
+                        let FollowedId = userFollowed.value
+
+                        socket.emit('new_like' , userId , FollowedId , postId)
+
+                        
+                        let nbLike =  res.data.nbLike
+                        Like.innerText = nbLike
+
+                
+                        
+                    }else{
+
+                        likePost.classList.remove('fa-thumbs-down')
+                        likePost.classList.add('fa-thumbs-up')
+
+
+                        let nbLike =  res.data.nbLike
+                        Like.innerText = nbLike
+                    }
+
+                    
+                })
+                .catch((error) =>{console.log(error)})
+                })
+    }
+
+    const likeComment = document.querySelectorAll('.likeComment')
+    const post =  document.getElementById('post')
+    
+
+    if(likeComment != null){
+
+        for(item of likeComment){
+
+            item.addEventListener('click' , function(event){
+
+                let PostId = post.value
+                let CommentId = event.target.id
+                let spanCliqué = event.target
             
-          </div>
-    </div>
-      
-</div>
-              
-</div>
+
+            
+                axios.get(`http://localhost:9000/likeComment/${CommentId}`)
+                .then((res) => {
+
+                    const likeCountElement = document.querySelector(`.likeCount-${CommentId}`);
+
+                    if(res.data.message){ 
+
+                        spanCliqué.classList.add('blue')
 
 
- 
-<%- include('component/footer') %> 
+                        let userId = user.value
+                        let FollowedId = userFollowed.value
+
+                        socket.emit('new_like_comment' , userId , FollowedId , PostId)
+
+
+                        const nbLike = res.data.nbLikeComment
+                        likeCountElement.innerText = nbLike 
+                    
+                    } else {
+
+                        spanCliqué.classList.remove('blue')
+                    
+                      
+                        const nbLike = res.data.nbLikeComment
+                        likeCountElement.innerText = nbLike 
+                    
+
+                    }
+                
+                
+                     
+                        
+                    
+                })
+                .catch((error =>  console.log(error)))
+
+            })
+        }  
+
+}
+</script>

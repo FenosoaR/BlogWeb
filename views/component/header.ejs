@@ -1,35 +1,74 @@
-<div class="header">
-    <div class="row">
-        <div class="col-lg-12 col-lg-6 col-lg-4 col-lg-2">
-            <span class="logo">BLOG</span>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <% for(item of categories){ %>
-                    <li><a href="/allCategoryPost/<%= item.id %>"><%= item.name %></a></li>
-                    <% } %>  
-                    <li><a href="/write">Write</a></li>
-                   <% if(user){ %>
-                        <li>
-                            <% if(user.pdp){ %>
-                                <div class="user-profil">
-                                    <img src="/pdp/<%= user.pdp %>" alt="">
-                                </div>
-                            <% } else {%>
-                                <div class="user-profil">
-                                </div>
+            <div class="navbar">
+                <div class="selectionner">
+                    <div class="selectionner-item">
+                        <form action="/search" method="get">
+                            <input type="text" name="search" placeholder="Search...">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </div>
+                    <div class="selectionner-item">
+                        <select id="" onchange="redirectToSelectedLink(this)">
+                            <option value="">Categories</option>
+                        <% for(item of categories){ %>
+                            <option value="/postCategory/<%= item.id %>"><%= item.name %></option>
+                        <% } %>
+                        </select>
+                    </div>
+                  
+                    <div class="selectionner-item">
+                        <select id="" onchange="redirectToSelectedLink(this)">
+                            <option value="">Date</option>
+                            <% for(item of annee){ %>
+                                <option value="/postDate/<%= item  %>"><%= item  %></option>
                             <% } %>
-                          
-                        </li>
-                        <li><%= user.username %></li>
-                        <li><i class="fa fa-sign-out"></i><a href="/logout">Log Out</a></li>
-                    <% }else{ %>
-                        <li><i class=" fa fa-sign-in"></i>   <a href="/login">Login</a></li>
-                    <% } %>       
-            </ul>
-            
-        </div>
-      </div>
+                        </select>
+                    </div>
+                   
+                </div> 
+                <ul>
+                    <li><a href="/">Articles</i></a></li>
+                    <li><a href="/notification" class="notification_link" >Notifications</a></li>
+                <% if(user){ %>
+                    <input type="hidden" id="room" value="<%= user.id %>">
+                    <li>
+                        <% if(user.pdp){ %>
+                            <div class="user-profil">
+                                <img src="/pdp/<%= user.pdp %>" alt="">
+                            </div>
+                        <% } else {%>
+                            <div class="user-profil"></div>
+                        <% } %>
+                    </li>
+                <% }else{ %>
+                        <li><a href="/login">Se connecter</a></li>
+                <% } %>       
+                </ul>
+            </div>
+<div class="pop-user"> 
+   
+    <i class="fa fa-pencil"> <a href="/write">Ecrire un article</a></i>  
+    <hr>
+    <i class="fa fa-user"> <a href="/profil">Profil</a></i>  
+    <hr>
+   <i class="fa fa-sign-out"> <a href="/logout">Se deconnecter</a></i> 
+   <hr>
+   <i class="fa fa-arrow-right"> Quitter</i>
+</div>          
+                
 
-</div>
+<script>
+    function redirectToSelectedLink(select) {
+        
+        const selectedOption = select.options[select.selectedIndex];  // mselectionner anle option cliquena , selectedIndex : recupere index de l'option selectionner 
+        const selectedLink = selectedOption.value; //maka anle url
+
+        if (selectedLink) {
+            window.location.href = selectedLink;
+        }
+    }
 
 
+
+    
+
+</script>

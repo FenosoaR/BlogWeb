@@ -15,7 +15,7 @@ module.exports =(sequelize , datatype) =>{
         },
         file:{
             type:datatype.STRING,
-            allowNull:false
+            allowNull:true
         }
     })
 }

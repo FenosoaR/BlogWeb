@@ -20,6 +20,26 @@ module.exports = (sequelize , datatype) =>{
         pdp:{
             type:datatype.STRING,
             allowNull:true
+        }, 
+        name:{
+            type:datatype.STRING,
+            allowNull:true
+        },
+        genre : {
+            type:datatype.STRING,
+            allowNull:true
+        },
+        addresse:{
+            type:datatype.STRING,
+            allowNull:true
+        },
+        dateNaissance :{
+            type:datatype.DATE,
+            allowNull:true
+        }, 
+        contact:{
+            type:datatype.STRING,
+            allowNull:true
         }
     })
 }
