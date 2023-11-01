@@ -1,6 +1,8 @@
 const { Category, Posts, Users, Follow, Likes, LikeComment, Notification } = require('../models')
 const path = require('path')
 const { Op } = require('sequelize')
+const { dateDePub} = require('../libs/datePub')
+const moment = require('moment')
 
 
 
@@ -34,7 +36,23 @@ const profil = async (req, res) => {
             
     }
 
-    return res.render('profil', { categories, user: req.user, posts, nb_posts, nb_follow , annee})
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+    return res.render('profil', {  dateDePub,categories, user: req.user,notifications, posts, nb_posts, nb_follow , annee})
 }
 const otherProfil = async (req, res) => {
 
@@ -77,8 +95,23 @@ const otherProfil = async (req, res) => {
         }
     }
   
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
 
-    return res.render('otherProfil', { annee,categories, posts, nb_posts, profil_user, user: req.user, already_followed, nbFollow })
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+    return res.render('otherProfil', {notifications, dateDePub, annee,categories, posts, nb_posts, profil_user, user: req.user, already_followed, nbFollow })
 }
 const edit = async (req, res) => {
 
@@ -95,31 +128,67 @@ const edit = async (req, res) => {
             annee.push(index)
             
     }
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
 
-    return res.render('edit', { post, categories, user: req.user, annee })
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+    return res.render('edit', {notifications,post, categories, user: req.user, annee, dateDePub })
 }
 
 const postedit = async (req, res) => {
 
     const { title, user, content, categories, id } = req.body
-    const file = req.files.file
-
-    let ext = path.extname(file.name)
-    let newFilename = `FILE-${Date.now()}${ext}`
-
-    file.mv(`public/upload/${newFilename}`, (error) => {
-        if (error) {
-            console.log(error);
-        }
-    })
-    const data = {
-        title,
-        content,
-        CategoryId: categories,
-        UserId: user,
-        file: newFilename
+   
+    let file = null
+    if (req.files && req.files.file) {
+        file = req.files.file;
     }
-    await Posts.update(data, { where: { id } })
+
+    let post =  await Posts.findOne({where : {id}})
+
+    if(file){
+
+        let ext = path.extname(file.name)
+        let newFilename = `FILE-${Date.now()}${ext}`
+
+        file.mv(`public/upload/${newFilename}`, (error) => {
+            if (error) {
+                console.log(error);
+            }
+        })
+
+         post = {
+            title,
+            content,
+            CategoryId: categories,
+            UserId: user,
+            file: newFilename
+        }
+
+    }else{
+
+        post = {
+            title,
+            content,
+            CategoryId: categories,
+            UserId: user,
+            file: post.file
+        }
+    }
+ 
+    await Posts.update(post, { where: { id } })
 
     return res.redirect('/profil')
 
@@ -138,12 +207,21 @@ const notification = async (req, res) => {
     const categories = await Category.findAll()
 
     const notifications =  await Notification.findAll({
-
         where : {FollowedId : req.user.id },
         order: [['createdAt', 'DESC']],
         include : Users
-
     })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
 
     
     const date = new Date();
@@ -157,19 +235,7 @@ const notification = async (req, res) => {
             
     }
 
-    // let likepost
-
-    // for (item of followers) {
-
-    //     likepost = await Likes.findAll({
-    //         where: { UserId: item.FollowedId },
-    //         order: [['createdAt', 'DESC']], include: Users
-    //     })
-
-    // }
-
-
-    return res.render('notification', { categories, user: req.user,notifications, annee })
+    return res.render('notification', { categories, user: req.user,notifications, annee, date, dateDePub })
 }
 
 
@@ -191,7 +257,7 @@ const listeFollowers = async(req, res) => {
     const followers =  await Follow.findAll({where : {FollowedId : UserId } , include : Users}) 
     
 
-    return res.render('listeFollowers' , {followers , categories , user : req.user, annee})
+    return res.render('listeFollowers' , {followers , categories , user : req.user, annee })
 }
 const postphoto = async(req, res)=>{
 

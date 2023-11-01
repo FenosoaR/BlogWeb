@@ -36,7 +36,7 @@
                              
                          <% } %>
                          <span class="nblike"><%= nbLike %></span> 
-                         <span class="likes">Likes</span>
+                         <span class="listeLikes pointer">Likes</span>
                     </div>
                 </div>  
                 
@@ -49,9 +49,10 @@
                 <input type="hidden" value="<%= single.User.id %>" id="userFollowed">
 
                 <div class="comment">
-                    <form action="/postComment" method="post">
+                    <form action="/postComment" method="post" class="addComment">
                         <input type="hidden" name="post" id="post" value="<%= single.id %>">
-                        <input type="text" placeholder="Ajouter un commentaire..." name="comment" ><button type="submit"><i class="fa fa-send"></i></button>
+                        <input type="text" placeholder="Ajouter un commentaire..." name="comment" class="inputComment">
+                        <button>Add Comment</button>
                     </form>
                 </div> 
               
@@ -66,10 +67,10 @@
 
                             <div class="comment-like">
                                 <% if(item.liked == true ){ %>
-                                    <span class="likeComment blue" id="<%= item.dataValues.id %>">Like</span> 
+                                    <span class="likeComment blue pointer" id="<%= item.dataValues.id %>">Like</span> 
                                     <span class="likeCount-<%= item.dataValues.id %>"><%= item.nb_likes %></span> 
                             <% } else { %>
-                                    <span class="likeComment" id="<%= item.dataValues.id %>">Like</span>
+                                    <span class="likeComment pointer" id="<%= item.dataValues.id %>">Like</span>
                                     <span class="likeCount-<%= item.dataValues.id %>"><%= item.nb_likes %></span> 
                             <% } %>
                         </div>
@@ -110,12 +111,14 @@
     </div>
     <div class="pop-like">
         <i class="fa fa-close close"></i>
-        <ul>
             <% for(like of likes){ %>
-                 <li><%= like.User.username %></li>   
+                <div class="user-profil">
+                    <img src="/pdp/<%= like.User.pdp %>" alt="">
+                </div>
+
+                <h5><%= like.User.username %></h5>  
+               
             <% } %> 
-        </ul>
-    
     </div>  
 
 
@@ -125,122 +128,3 @@
      <% } %>     
 </div> 
 
-<script src="/axios/dist/axios.min.js"></script>
-<script src="/client-dist/socket.io.min.js"></script>
-<script>
-
-    let socket = io()
-
-   
-    const likePost = document.querySelector('.likepost')
-    const Like = document.querySelector('.nblike')
-    const user = document.getElementById('user')
-    const userFollowed = document.getElementById('userFollowed') 
-   
-
-    if(likePost != null){
-
-        likePost.addEventListener('click' , function(e){
-
-            // console.log(e.target);
-            // console.log(e.target.nextElementSibling);
-
-                let postId = e.target.id 
-               
-
-                axios.get(`http://localhost:9000/like/${postId}`)
-                .then((res) =>{
-                
-                    if(res.data.message){
-
-                        
-                        likePost.classList.remove('fa-thumbs-up')
-                        likePost.classList.add('fa-thumbs-down')
-
-                       
-
-                        let userId = user.value
-                        let FollowedId = userFollowed.value
-
-                        socket.emit('new_like' , userId , FollowedId , postId)
-
-                        
-                        let nbLike =  res.data.nbLike
-                        Like.innerText = nbLike
-
-                
-                        
-                    }else{
-
-                        likePost.classList.remove('fa-thumbs-down')
-                        likePost.classList.add('fa-thumbs-up')
-
-
-                        let nbLike =  res.data.nbLike
-                        Like.innerText = nbLike
-                    }
-
-                    
-                })
-                .catch((error) =>{console.log(error)})
-                })
-    }
-
-    const likeComment = document.querySelectorAll('.likeComment')
-    const post =  document.getElementById('post')
-    
-
-    if(likeComment != null){
-
-        for(item of likeComment){
-
-            item.addEventListener('click' , function(event){
-
-                let PostId = post.value
-                let CommentId = event.target.id
-                let spanCliqué = event.target
-            
-
-            
-                axios.get(`http://localhost:9000/likeComment/${CommentId}`)
-                .then((res) => {
-
-                    const likeCountElement = document.querySelector(`.likeCount-${CommentId}`);
-
-                    if(res.data.message){ 
-
-                        spanCliqué.classList.add('blue')
-
-
-                        let userId = user.value
-                        let FollowedId = userFollowed.value
-
-                        socket.emit('new_like_comment' , userId , FollowedId , PostId)
-
-
-                        const nbLike = res.data.nbLikeComment
-                        likeCountElement.innerText = nbLike 
-                    
-                    } else {
-
-                        spanCliqué.classList.remove('blue')
-                    
-                      
-                        const nbLike = res.data.nbLikeComment
-                        likeCountElement.innerText = nbLike 
-                    
-
-                    }
-                
-                
-                     
-                        
-                    
-                })
-                .catch((error =>  console.log(error)))
-
-            })
-        }  
-
-}
-</script>

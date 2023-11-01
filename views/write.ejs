@@ -27,102 +27,12 @@
               </div>
             <% } %>
           </select>
-        </div>
-
-      
+        </div>      
       </div>
     </form>
   </div>
 </div>
-<script src="/ckeditor/ckeditor.js"></script>
-<script src="/axios/dist/axios.min.js"></script>
-<script src="/client-dist/socket.io.min.js"></script>
 
-<script>
-
-  
-
-  let socket = io()
-
-
-  const form = document.querySelector('.form')
-  const user = document.getElementById('user')
-  const inputTitle = document.getElementById('title')
-  const inputContent = document.getElementById('content')
-  const inputCategory = document.getElementById('category')
-  const inputFile = document.getElementById('file')
-  const followers = document.querySelectorAll('#followers')
-
-  if(form != null){
-
-        form.addEventListener('submit' , (event)=>{
-
-          event.preventDefault()
-
-          if(inputFile.files[0]){
-
-               const formdata = new FormData()
-
-          
-              formdata.append('title' , inputTitle.value)
-              formdata.append('content' , inputContent.value)
-              formdata.append('file' , inputFile.files[0])
-              formdata.append('categories' , inputCategory.value)
-              formdata.append('UserId' , user.value)
-
-              axios.post('http://localhost:9000/write' , formdata)
-              .then((res) =>{
-
-             
-              let data = res.data.newPost
-             
-              let UserId = user.value
-          
-              socket.emit('new_post', data)
-
-              window.location.href = '/'
-            })
-            .catch(e => console.log(e))
-              
-          }else{
-
-               const formdata = new FormData()
-
-          
-              formdata.append('title' , inputTitle.value)
-              formdata.append('content' , inputContent.value)
-              formdata.append('file' , null)
-              formdata.append('categories' , inputCategory.value)
-              formdata.append('UserId' , user.value)
-
-              axios.post('http://localhost:9000/write' , formdata)
-             .then((res) =>{
-
-             
-              let data = res.data.newPost
-             
-              let UserId = user.value
-          
-              socket.emit('new_post', data)
-
-              window.location.href = '/'
-            })
-            .catch(e => console.log(e))
-           }
-
-         
-
-          // console.log(formdata);
-
-        
-      
-          
-          
-        })
-      
-  }
-
-</script>
 
 
 

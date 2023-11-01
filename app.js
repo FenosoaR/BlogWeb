@@ -61,7 +61,7 @@ app.use('/',SecurityRoute)
 app.use('/' ,ensureAuthenticated, PostRoute )
 app.use('/' ,ensureAuthenticated, ProfilRoute)
 
-//jerena hoe olona connecter ve ao amle site
+//jerena hoe misy olona connecter ve ao amle site
 io.on('connection', (socket) => {
     console.log('Un utilisateur est connecté :', socket.id);
   
@@ -168,6 +168,32 @@ io.on('connection', (socket) => {
         
         
        
+    })
+
+    socket.on('addComment_room', (userId) => { 
+        socket.join(userId);
+        console.log(socket.rooms);
+    });
+
+    socket.on('new_coms', async(data, userId, FollowedId, PostId) => {
+        console.log('okok');
+        const user = await Users.findOne({where :{id : userId}})
+
+        if(userId != FollowedId){
+
+            socket.to(FollowedId).emit('new_coms' , user)
+
+            const newNotification = Notification.build({
+
+                UserId: userId,
+                FollowedId : FollowedId,
+                name : 'Coms',
+                TargetId :PostId
+    
+            })
+            newNotification.save()
+        }
+        
     })
 
     socket.on('comment_room', (userId) => { 

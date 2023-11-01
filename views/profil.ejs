@@ -1,63 +1,67 @@
 <%- include('component/header') %>
-<div class="container-fluid">
-    <div class="row" style="margin-top: 10px;">
-        <div class="col-lg-3 info-user">
-            <div class="form-group">
-                <div class="profil-user">
-                    <img src="/pdp/<%= user.pdp %>"  alt="">
-                </div>
-                <div class="name">
-                    <% if(user.name){ %>
-                        <span><%= user.name%></span>    
-                    <% } else { %>
-                        <span><%= user.username %></span>    
-                    <% } %> 
-                </div>      
-           </div>
-           <hr>
-           <div class="form-group">
-                <span class="btn-profil">Modifier votre profil</span>
-           </div>
-           
-           <div class="form-group">
-                <span class="ajoutPhoto">Ajouter un photo de profil</span>
-         </div>
-           <div class="form-group">
-                <span><%= nb_posts %></span> Posts
-           </div>
-           <div class="form-group">
-            <span><%= nb_follow %></span>
-            <a href="/listeFollowers/<%= user.id %>"> Followers</a>
+<div class="container">
+    <div class="row" style="margin-top: 20px;">
+        <div class="col">
+            <div class="profil-user">
+                <img src="/pdp/<%= user.pdp %>"  alt="">
+            </div>
+            <h3><%= user.username %></h3>
+        </div>
+        <div class="col">
+            <div class="bot">
+                <span><%= nb_posts %></span>
+            <h3>Posts</h3>
+            </div>
+            
+        </div>
+        <div class="col">
+            <div class="bot">
+                <span><%= nb_follow %></span>
+            <h3><a href="/listeFollowers/<%= user.id %>"> Followers</a></h3>
             </div>
         </div>
+    </div>
+  
+
+    <div class="row">
         <div class="col-lg-6">
-                <% for(item of posts){ %>  
-                    <div class="post-profil">
-                        <h2><%= item.title %></h2>
-                        <div class="modif">
-                            <i class="fa fa-bars" id="<%= item.id %>"></i>
-                        </div>
-                        <p><%= item.content %></p>
-    
-                        <div class="card">
-                            <img src="/upload/<%= item.file %>" alt="">
-                        </div> 
-                        <div class="pop-bar" id="pop-bar-<%= item.id %>">
-                            <a href="/edit/<%= item.id %>">Modifier l'article</a><br>
-                            <a href="/delete/<%= item.id %>">Effacer l'article</a>
-                        </div>
-                          <hr>
-                    </div>  
-                    
-                   
-                    <% } %>
+            <span class="btn btn-profil">Modifier votre profil</span>
+            <span class="btn  ajoutPhoto">Ajouter un photo de profil</span>
+            
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-6">
+            <% for(item of posts){ %>  
+                <div class="post-profil">
+                    <h2><%= item.title %></h2>
+                    <div class="modif">
+                        <i class="fa fa-bars" id="<%= item.id %>"></i>
+                    </div>
+                    <p><%= item.content %></p>
+        
+                    <div class="card">
+                        <img src="/upload/<%= item.file %>" alt="">
+                    </div> 
+                    <div class="pop-bar" id="pop-bar-<%= item.id %>">
+                        <a href="/edit/<%= item.id %>">Modifier l'article</a><br>
+                        <a href="/delete/<%= item.id %>">Effacer l'article</a>
+                    </div>
+                      <hr>
+                </div>  
+                
+               
+                <% } %>
         </div>
     </div>
 </div>
 
 
+
+
 <div class="modif-profil">
-    <h3>Modifier profil</h3>
+    <i class="fa fa-close close-modif-profil"></i>
     <form action="/editProfil" method="post">
         <div class="form-group">
             <input type="text" name="name" class="form-control" placeholder="Entrer votre nom">

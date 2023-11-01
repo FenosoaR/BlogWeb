@@ -1,4 +1,4 @@
-const {Category , Posts , Users , Likes , Comment , LikeComment, Follow} = require('../models')
+const {Category , Posts , Users , Likes , Comment , LikeComment, Follow, Notification} = require('../models')
 const path = require('path')
 const {Op} =require('sequelize')
 const moment = require('moment')
@@ -38,7 +38,24 @@ const write = async(req, res) =>{
             
     }
 
-    return res.render('write' , {categories , user:req.user , followers, annee})
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+
+    return res.render('write' , {categories , user:req.user , dateDePub, followers, annee, notifications})
 }
 
 const postwrite = async(req, res)=>{
@@ -199,7 +216,23 @@ const single = async(req, res) =>{
                 
     }
 
-    return res.render('single' , {categories , user :req.user , single, postlike,nbLike,posts,allComments, differenceEnSecondes, date_publication, likes, annee})
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+    return res.render('single' , {notifications, dateDePub ,categories , user :req.user , single, postlike,nbLike,posts,allComments, differenceEnSecondes, date_publication, likes, annee})
 }
 
 const search = async(req, res) =>{
@@ -209,6 +242,22 @@ const search = async(req, res) =>{
     
     const categories = await Category.findAll()
     const category =  await Category.findOne({where :{ name : search }})
+
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
 
     const date = new Date();
 
@@ -234,7 +283,7 @@ const search = async(req, res) =>{
             
         })
 
-        return res.render('categorypost' , {categories , posts , user:req.user , category, dateDePub, annee})
+        return res.render('categorypost' , {categories ,notifications, posts , user:req.user , category, dateDePub, annee})
         
     }else{
 
@@ -251,7 +300,7 @@ const search = async(req, res) =>{
             }, include : Users
         })
 
-        return res.render('homepage' , {categories , posts , user:req.user , dateDePub, annee})
+        return res.render('homepage' , {categories ,notifications, posts , user:req.user , dateDePub, annee})
 
     }
  
@@ -295,17 +344,30 @@ const like = async(req, res) =>{
 
 const postComment = async(req, res)  =>{
 
-    const {comment , post} = req.body
+    try {
+        
+        const {comment , post} = req.body
+    
+        const newComment = Comment.build({
+            comment:comment,
+            UserId:req.user.id,
+            PostId :post,
+        })
+    
+        await newComment.save()
 
-    const newComment = Comment.build({
-        comment,
-        UserId:req.user.id,
-        PostId :post,
-    })
+        return res.json({newComment})
 
-    await newComment.save()
+    } catch (error) {
 
-    return res.redirect(`/single/${post}`)
+        console.log(error)
+    }
+
+   
+
+    // return res.redirect(`/single/${post}`)
+
+   
 
 
 }
@@ -394,7 +456,23 @@ const postParDate = async(req, res) =>{
             
     }
 
-    return res.render('triParDate' , {posts , categories , user:req.user , dateDePub , annee})
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+    return res.render('triParDate' , {posts , categories ,notifications, user:req.user , dateDePub , annee})
 
 }
 

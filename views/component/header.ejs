@@ -27,7 +27,7 @@
                 </div> 
                 <ul>
                     <li><a href="/">Articles</i></a></li>
-                    <li><a href="/notification" class="notification_link" >Notifications</a></li>
+                    <li class="notification_link" style="cursor: pointer;">Notifications</li>
                 <% if(user){ %>
                     <input type="hidden" id="room" value="<%= user.id %>">
                     <li>
@@ -43,17 +43,301 @@
                         <li><a href="/login">Se connecter</a></li>
                 <% } %>       
                 </ul>
+
+                
             </div>
-<div class="pop-user"> 
-   
-    <i class="fa fa-pencil"> <a href="/write">Ecrire un article</a></i>  
-    <hr>
-    <i class="fa fa-user"> <a href="/profil">Profil</a></i>  
-    <hr>
-   <i class="fa fa-sign-out"> <a href="/logout">Se deconnecter</a></i> 
-   <hr>
-   <i class="fa fa-arrow-right"> Quitter</i>
-</div>          
+
+<% if(user){ %>
+    <div class="pop-user"> 
+        <i class="fa fa-close close-user"></i>
+        <i class="fa fa-pencil"> <a href="/write">Ecrire un article</a></i>  
+        <hr>
+        <i class="fa fa-user"> <a href="/profil">Profil</a></i>  
+        <hr>
+       <i class="fa fa-sign-out"> <a href="/logout">Se deconnecter</a></i> 
+    </div>  
+
+    <div class="pop-notif">
+        <i class="fa fa-close close-notif"></i>
+        <div id="message_bar">   
+            <% for(item of notifications){ %>
+                <% if(item.name == 'Follow') { %>
+                    <% if(item.lu){ %>
+                        <div class="notif_lu pointer">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                           <p id="profils" class="left"><%= item.User.dataValues.username %>  followed you</p>  
+                           <input type="hidden" value="<%= item.User.dataValues.id %>"  id="user">  
+                           <% if(item.publier < 60){ %>
+                            <p class="ago"><%= item.publier %> secondes </p>
+                             
+                        <% }else if(item.publier < 3600){ %> 
+    
+                            <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                        <% } else if(item.publier < 86400){ %>
+                            
+                            <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                            
+                            <% }else{ %>
+                                <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                            <% } %>
+                        
+                        
+                        </div>
+                       
+                    <% } else { %>
+                        <div class="notif_non_lu ">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                           <p id="profils" class="left" ><%= item.User.dataValues.username %>  followed you</p> 
+                           <input type="hidden" value="<%= item.User.dataValues.id %>"  id="user">  
+                           <% if(item.publier < 60){ %>
+                            <p class="ago"><%= item.publier %> secondes </p>
+                             
+                        <% }else if(item.publier < 3600){ %> 
+    
+                            <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                        <% } else if(item.publier < 86400){ %>
+                            
+                            <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                            
+                            <% }else{ %>
+                                <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                            <% } %>
+                            
+                        </div>
+                    <% } %>
+                    
+                      
+                <% }else if (item.name == 'Post'){ %>
+                
+                        <% if(item.lu == true){ %>
+                            
+    
+                        <div class="notif_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p id="posts" class="left" ><%= item.User.dataValues.username %>  posted new article </p>
+                            <input type="hidden" value="<%= item.TargetId %> "> 
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                                <% }else{ %>
+                                    <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                <% } %>
+                              
+                        </div>
+                       
+    
+                    <% } else { %>
+                       
+                       
+                        <div class="notif_non_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                                <p id="posts" class="left"><%= item.User.dataValues.username %>  posted new article </p>
+                                <input type="hidden" value="<%= item.TargetId %>"> 
+                                <% if(item.publier < 60){ %>
+                                    <p class="ago"><%= item.publier %> secondes </p>
+                                     
+                                <% }else if(item.publier < 3600){ %> 
+    
+                                    <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+        
+                                <% } else if(item.publier < 86400){ %>
+                                    
+                                    <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                    
+                                    <% }else{ %>
+                                        <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                    <% } %>
+                               
+                        </div>
+                    
+                    <% } %>
+                  
+                    
+                <% }else if(item.name == 'Like') { %>
+    
+    
+                    <% if(item.lu == true){ %>
+                        <div class="notif_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p id="likes" class="left" ><%= item.User.dataValues.username %>  liked your post </p> 
+                            <input type="hidden" value="<%= item.TargetId %> ">  
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                                <% }else{ %>
+                                    <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                <% } %>
+                           
+                        </div>
+                    <% } else { %>
+                        <div class="notif_non_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p id="likes" class="left"><%= item.User.dataValues.username %>  liked your post </p> 
+                            <input type="hidden" value="<%= item.TargetId %> "> 
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                                <% }else{ %>
+                                    <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                <% } %>
+                            
+                        </div>
+                    <% } %>
+    
+                 
+                <% }else if(item.name == 'Comment') { %>
+    
+                    <% if(item.lu == true){ %>
+                        <div class="notif_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p id="comments" class="left"><%= item.User.dataValues.username %>  liked your comment </p>
+                            <input type="hidden" value="<%= item.TargetId %> ">  
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                                <% }else{ %>
+                                    <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                <% } %>
+                           
+                        </div>
+                    <% } else { %>
+                        <div class="notif_non_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p id="comments" class="left"><%= item.User.dataValues.username %>  liked your comment </p> 
+                            <input type="hidden" value="<%= item.TargetId %> "> 
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                                <% }else{ %>
+                                    <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                <% } %>
+                            
+                        </div>
+                    <% } %>
+    
+                  
+                <% }else{ %>
+    
+                    <% if(item.lu == true){ %>
+                        <div class="notif_lu">
+                             <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p class="left" id="newComment" ><%= item.User.dataValues.username %> commented your post </p>
+                            <input type="hidden" value="<%= item.TargetId %> ">  
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                            <% }else{ %>
+                                <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                            <% } %>
+                          
+                        </div>
+                    <% } else { %>
+                        <div class="notif_non_lu">
+                            <div class="profil">
+                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                            </div>
+                            <p class="left"  id="newComment" ><%= item.User.dataValues.username %> commented your post </p> 
+                            <input type="hidden" value="<%= item.TargetId %> ">  
+    
+                            <% if(item.publier < 60){ %>
+                                <p class="ago"><%= item.publier %> secondes </p>
+                                 
+                            <% }else if(item.publier < 3600){ %> 
+    
+                                <p class="ago"><%= Math.floor(item.publier / 60) %> minutes </p>
+    
+                            <% } else if(item.publier < 86400){ %>
+                                
+                                <p class="ago"><%= Math.floor(item.publier / 3600) %> heures </p>
+                                
+                                <% }else{ %>
+                                    <p class="ago"><%= dateDePub(item.createdAt)  %> </p>
+                                <% } %>
+                          
+                           
+                        </div>
+                    <% } %>
+    
+    
+                <% } %>
+                                 
+            <% } %>
+    
+    
+    
+        </div>
+    </div>
+<% } %>
+
+
                 
 
 <script>
@@ -66,9 +350,4 @@
             window.location.href = selectedLink;
         }
     }
-
-
-
-    
-
 </script>

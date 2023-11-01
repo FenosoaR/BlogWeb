@@ -342,41 +342,64 @@ body{
     color: black;
 }
 .profil-user{
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
 }
 .profil-user img{
-    width: 40px;
-    height: 40px;
-    border-radius: 40px;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
 }
-
+#message_bar{
+    margin-top: 20px;
+}
 .notif_non_lu{
-    height: 50px;
-    padding: 10px;
-    background-color: grey;
-    margin-top: 10px;
+    height: 60px;
+    padding: 15px;
+    background-color: lightgray;
+    border-bottom: 1px solid grey;
+    border-radius: 5px;
+    cursor: pointer;
 }
 .notif_lu{
-    height: 50px;
+    height: 60px;
     padding: 10px;
-    background-color: lightgray;
-    margin-top: 10px;
+    background-color: white;
+    border-bottom: 1px solid grey;
+    border-radius: 5px;
+    cursor: pointer;
+    
 }
 .pop-like{
     position: relative;
-    top: -783px;
-    left: 20%;
-    width:400px;
+    top: -588px;
+    left: 25%;
+    width: 400px;
     height: 200px;
-    background-color: grey;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
     display: none;
+}
+.pop-like .user-profil{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    margin-top: 10px;
+}
+.pop-like .user-profil img{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+}
+.pop-like h5{
+    margin-top: -30px;
+    margin-left: 50px;
+    
 }
 .pop-like i {
     float: right;
-    margin-right: 10px;
-    font-size: 25px;
 }
 .pop-user{
     position: absolute;
@@ -392,6 +415,11 @@ body{
     z-index: 2;
     display: none;
   
+}
+.close-user{
+    float: right;
+    margin-top: -10px;
+    margin-right: 10px;
 }
 .pop-user a{
     color: black;
@@ -438,25 +466,32 @@ body{
     top: 22%;
     left: 30%;
     display: none;
+    border-radius: 5px;
 }
-.modif-profil h3{
-   text-align: center;
+.modif-profil i{
+  float: right;
+}
+.modif-profil form{
+    margin-top: 30px;
+}
+.modif-profil button{
+    background-color: lightgray;
 }
 .modif{
     float: right;
-    margin-top: -11%;
+    margin-top: -13%;
 }
 .post-profil{
     position: relative;
 }
 .pop-bar{
     position: absolute;
-    top: 4%;
+    top: 5%;
     width: 150px;
     height: 70px;
     background-color: white;
     box-shadow: 1px 1px 1px grey;
-    left: 77%;
+    left: 72%;
     padding: 10px;
     border-radius: 10px;
     display: none;
@@ -464,4 +499,53 @@ body{
 .pop-bar a{
     color: black;
 }
+.profil{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+}
+.profil img{
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+}
+.left{
+    margin-left: 47px;
+    margin-top: -43px;
+}
+.ago{
+    margin-left: 47px;
+    margin-top: -20px;
+}
+.pop-notif{
+    position: absolute;
+    left: 65%;
+    top: 6%;
+    width: 400px;
+    border-radius: 14px;
+    z-index: 7;
+    background-color: white;
+    display: none;
+    padding: 10px;
 
+}
+.pop-notif i{
+    float: right;
+}
+.bot span{
+    font-size: 23px;
+  
+}
+.bot a{
+    
+    color: black;
+}
+.btn-profil{
+    background-color: lightgray;
+}
+.ajoutPhoto{
+    background-color: lightgray;
+}
+.pointer{
+    cursor: pointer;
+}

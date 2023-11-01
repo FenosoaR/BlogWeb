@@ -1,6 +1,6 @@
 const express =require('express')
 const { ensureAuthenticated } = require('../config/security')
-const { login, register, postregister, postlogin } = require('../controllers/SecurityController')
+const { login, register, postregister, postlogin} = require('../controllers/SecurityController')
 
 const router = express.Router()
 
@@ -19,6 +19,7 @@ router.get('/logout', ensureAuthenticated,(req,res)=>{
         }
     })
 })
+
 
 
 

@@ -1,5 +1,6 @@
 const {Category , Posts , Notification, Users} = require('../models')
 const {dateDePub} = require('../libs/datePub')
+const moment = require('moment')
 
 Users.hasMany(Posts)
 Posts.belongsTo(Users)
@@ -15,6 +16,22 @@ const homepage = async(req, res) => {
             console.log(item.createdAt);
         }
 
+        const notifications =  await Notification.findAll({
+            where : {FollowedId : req.user.id },
+            order: [['createdAt', 'DESC']],
+            include : Users
+        })
+    
+        for(item of notifications){
+    
+            const maintenant = moment();
+      
+            const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+    
+            item.publier = differenceEnSecondes
+    
+        }
+
         const date = new Date();
 
         const yearNow = date.getFullYear()
@@ -25,7 +42,7 @@ const homepage = async(req, res) => {
             annee.push(index)
         
         }
-        return res.render('homepage' , {categories , posts , user:req.user, dateDePub, annee})
+        return res.render('homepage' , {categories , posts , user:req.user, dateDePub, annee, notifications})
 
     }else{
       
@@ -72,8 +89,8 @@ const header = async (req, res) =>{
 
     const categories = await Category.findAll()
 
-    const notifications =  await Notification.findAll({where : {FollowedId : req.user.id}})
-    let nb_notif = notifications.length
+    // const notifications =  await Notification.findAll({where : {FollowedId : req.user.id}})
+    // let nb_notif = notifications.length
 
     // let annee = []
     
@@ -83,7 +100,23 @@ const header = async (req, res) =>{
         
     // }
 
-    return res.render('component/header' , {categories ,user: req.user , nb_notif})
+    const notifications =  await Notification.findAll({
+        where : {FollowedId : req.user.id },
+        order: [['createdAt', 'DESC']],
+        include : Users
+    })
+
+    for(item of notifications){
+
+        const maintenant = moment();
+  
+        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+
+        item.publier = differenceEnSecondes
+
+    }
+
+    return res.render('component/header' , {categories ,user: req.user , dateDePub, nb_notif, notifications})
 }
 
 

@@ -1,6 +1,6 @@
 <%- include('component/header') %>
 <div class="container">
-    <div class="row">
+    <div class="row" style="margin-top: 20px;">
         <div class="col">
             <div class="profil-user">
                 <img src="/pdp/<%= profil_user.pdp %>"  alt="">
@@ -14,17 +14,18 @@
         <div class="col">
             <div class="bot">
                 <span><%= nb_posts %></span>
-            <h4>Posts</h4>
+            <h3>Posts</h3>
             </div>
             
         </div>
         <div class="col">
             <div class="bot">
                 <span><%= nbFollow %></span>
-            <h4><a href="/listeFollowers/<%= profil_user.id %>">Followers</a></h4>
+            <h3><a href="/listeFollowers/<%= profil_user.id %>">Followers</a></h3>
             </div>
         </div>
     </div>
+  
 
     <div class="row">
         <div class="col-lg-6">
@@ -38,7 +39,7 @@
             
         </div>
     </div>
-
+    <hr>
     <div class="row">
         <div class="col-lg-6">
             <% for(item of posts){ %>  
@@ -58,42 +59,5 @@
       
     </div>
 </div>
-<script src="/client-dist/socket.io.min.js"></script>
-<script>
-    //initialisation anle socket
-    let socket = io()
 
-    const follow = document.getElementById('follow')
-    const following = document.getElementById('following')
-    const user_connecter = document.getElementById('user_connecter')
-    const user_followed = document.getElementById('user_followed')
-    const user_connecter_name = document.getElementById('user_connecter_name')
-
-
-    if(follow != null){
-
-        let FollowedId = user_followed.value
-        let userConnecter = user_connecter.value
-  
-        
-        follow.addEventListener('click' , function(e){
-
-            e.preventDefault()
-            
-            let data = {
-
-                UserId: user_connecter.value,
-                FollowedId: user_followed.value,
-            }
-            
-
-            socket.emit('follow' , data , FollowedId , userConnecter)
-
-            follow.classList.add('dis-none')
-            following.classList.remove('dis-none')         
-
-        })
-    }
-
-</script>
 <%- include('component/footer') %>

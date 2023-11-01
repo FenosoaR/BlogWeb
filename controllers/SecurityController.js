@@ -2,6 +2,7 @@ const {Users} = require('../models')
 const bcrypt = require ('bcryptjs')
 const passport = require('passport')
 const path = require('path')
+const nodemailer = require('nodemailer')
 
 const register = async(req, res) =>{
     
@@ -62,6 +63,12 @@ const postlogin = async(req, res , next)=>{
         failureRedirect:'/login',
         failureFlash:true
     })(req, res, next)
+}
+
+const forgotPassword = async(req, res)=>{
+
+    return res.render('auth/forgotPassword')
+
 }
 
 
