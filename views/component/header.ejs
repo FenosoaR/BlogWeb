@@ -1,63 +1,65 @@
-            <div class="navbar">
-                <div class="selectionner">
-                    <div class="selectionner-item">
-                        <form action="/search" method="get">
-                            <input type="text" name="search" placeholder="Search...">
-                            <button type="submit"><i class="fa fa-search"></i></button>
-                        </form>
-                    </div>
-                    <div class="selectionner-item">
-                        <select id="" onchange="redirectToSelectedLink(this)">
-                            <option value="">Categories</option>
-                        <% for(item of categories){ %>
-                            <option value="/postCategory/<%= item.id %>"><%= item.name %></option>
-                        <% } %>
-                        </select>
-                    </div>
-                  
-                    <div class="selectionner-item">
-                        <select id="" onchange="redirectToSelectedLink(this)">
-                            <option value="">Date</option>
-                            <% for(item of annee){ %>
-                                <option value="/postDate/<%= item  %>"><%= item  %></option>
+<div class="header">
+    <div class="list-icone">
+        <ul>
+            <li><i class="fa fa-facebook"></i></li>
+            <li><i class="fa fa-twitter"></i></li>
+            <li><i class="fa fa-instagram"></i></li>
+            <li><i class="fa fa-dribbble"></i></li>
+        </ul>
+        <div class="search">
+            <ul>
+                <li>
+                    <form action="/search" method="get">
+                        <input type="text" name="search" placeholder="Search...">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </li>
+                <li class="notification_link"><i class="fa fa-bell-o"></i></li>
+                <li>
+                    <% if(user){ %>
+                        <input type="hidden" id="room" value="<%= user.id %>">
+                        <input type="hidden" id="user" value="<%= user.id %>">
+                        <li>
+                            <% if(user.pdp){ %>
+                                <div class="user-profil">
+                                    <img src="/pdp/<%= user.pdp %>" alt="">
+                                </div>
+                            <% } else {%>
+                                <div class="user-profil">
+                                    <img src="/images/default.jpg" alt="">
+                                </div>
                             <% } %>
-                        </select>
-                    </div>
-                   
-                </div> 
-                <ul>
-                    <li><a href="/">Articles</i></a></li>
-                    <li class="notification_link" style="cursor: pointer;">Notifications</li>
-                <% if(user){ %>
-                    <input type="hidden" id="room" value="<%= user.id %>">
-                    <li>
-                        <% if(user.pdp){ %>
-                            <div class="user-profil">
-                                <img src="/pdp/<%= user.pdp %>" alt="">
-                            </div>
-                        <% } else {%>
-                            <div class="user-profil"></div>
-                        <% } %>
-                    </li>
-                <% }else{ %>
-                        <li><a href="/login">Se connecter</a></li>
-                <% } %>       
-                </ul>
+                        </li>
+                    <% }else{ %>
+                            <li><a href="/login"><i class="fa fa-user"></i></a></li>
+                    <% } %> 
+            </ul>
+        </div>  
+    </div>
+    <div class="navbar">
+        <ul class="nav-categories">
+            <li><a href="/">ACCUEIL</i></a></li>  
+            <% for(item of categories){ %>
+                <li><a href="/postCategory/<%= item.id %>"><%= item.name %></a></li>
+            <% } %>   
+        </ul>
+    </div>
+</div>
 
-                
-            </div>
+           
 
 <% if(user){ %>
     <div class="pop-user"> 
         <i class="fa fa-close close-user"></i>
-        <i class="fa fa-pencil"> <a href="/write">Ecrire un article</a></i>  
+        <i class="fa fa-pencil"><a href="/write">Ecrire un article</a></i>  
         <hr>
-        <i class="fa fa-user"> <a href="/profil">Profil</a></i>  
+        <i class="fa fa-user"><a href="/profil">Profil</a></i>  
         <hr>
-       <i class="fa fa-sign-out"> <a href="/logout">Se deconnecter</a></i> 
+       <i class="fa fa-sign-out"><a href="/logout">Se deconnecter</a></i> 
     </div>  
 
     <div class="pop-notif">
+        <h4>Notifications</h4>
         <i class="fa fa-close close-notif"></i>
         <div id="message_bar">   
             <% for(item of notifications){ %>
@@ -67,7 +69,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                           <p id="profils" class="left"><%= item.User.dataValues.username %>  followed you</p>  
+                           <p id="profils" class="left"><%= item.User.dataValues.username %>  vous suit</p>  
                            <input type="hidden" value="<%= item.User.dataValues.id %>"  id="user">  
                            <% if(item.publier < 60){ %>
                             <p class="ago"><%= item.publier %> secondes </p>
@@ -92,7 +94,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                           <p id="profils" class="left" ><%= item.User.dataValues.username %>  followed you</p> 
+                           <p id="profils" class="left" ><%= item.User.dataValues.username %>  vous suit</p> 
                            <input type="hidden" value="<%= item.User.dataValues.id %>"  id="user">  
                            <% if(item.publier < 60){ %>
                             <p class="ago"><%= item.publier %> secondes </p>
@@ -122,7 +124,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p id="posts" class="left" ><%= item.User.dataValues.username %>  posted new article </p>
+                            <p id="posts" class="left" ><%= item.User.dataValues.username %>  a posté un nouveau article </p>
                             <input type="hidden" value="<%= item.TargetId %> "> 
                             <% if(item.publier < 60){ %>
                                 <p class="ago"><%= item.publier %> secondes </p>
@@ -149,7 +151,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                                <p id="posts" class="left"><%= item.User.dataValues.username %>  posted new article </p>
+                                <p id="posts" class="left"><%= item.User.dataValues.username %> a posté un nouveau article </p>
                                 <input type="hidden" value="<%= item.TargetId %>"> 
                                 <% if(item.publier < 60){ %>
                                     <p class="ago"><%= item.publier %> secondes </p>
@@ -179,7 +181,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p id="likes" class="left" ><%= item.User.dataValues.username %>  liked your post </p> 
+                            <p id="likes" class="left" ><%= item.User.dataValues.username %>  a aimé votre article </p> 
                             <input type="hidden" value="<%= item.TargetId %> ">  
                             <% if(item.publier < 60){ %>
                                 <p class="ago"><%= item.publier %> secondes </p>
@@ -202,7 +204,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p id="likes" class="left"><%= item.User.dataValues.username %>  liked your post </p> 
+                            <p id="likes" class="left"><%= item.User.dataValues.username %>  a aimé votre article </p> 
                             <input type="hidden" value="<%= item.TargetId %> "> 
                             <% if(item.publier < 60){ %>
                                 <p class="ago"><%= item.publier %> secondes </p>
@@ -230,7 +232,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p id="comments" class="left"><%= item.User.dataValues.username %>  liked your comment </p>
+                            <p id="comments" class="left"><%= item.User.dataValues.username %> a aimé votre commentaire </p>
                             <input type="hidden" value="<%= item.TargetId %> ">  
                             <% if(item.publier < 60){ %>
                                 <p class="ago"><%= item.publier %> secondes </p>
@@ -253,7 +255,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p id="comments" class="left"><%= item.User.dataValues.username %>  liked your comment </p> 
+                            <p id="comments" class="left"><%= item.User.dataValues.username %>  a aimé votre commentaire </p> 
                             <input type="hidden" value="<%= item.TargetId %> "> 
                             <% if(item.publier < 60){ %>
                                 <p class="ago"><%= item.publier %> secondes </p>
@@ -281,7 +283,7 @@
                              <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p class="left" id="newComment" ><%= item.User.dataValues.username %> commented your post </p>
+                            <p class="left" id="newComment" ><%= item.User.dataValues.username %> a commenté votre article </p>
                             <input type="hidden" value="<%= item.TargetId %> ">  
                             <% if(item.publier < 60){ %>
                                 <p class="ago"><%= item.publier %> secondes </p>
@@ -304,7 +306,7 @@
                             <div class="profil">
                                 <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
                             </div>
-                            <p class="left"  id="newComment" ><%= item.User.dataValues.username %> commented your post </p> 
+                            <p class="left"  id="newComment" ><%= item.User.dataValues.username %> a commenté votre article </p> 
                             <input type="hidden" value="<%= item.TargetId %> ">  
     
                             <% if(item.publier < 60){ %>
