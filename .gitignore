@@ -1,5 +1,14 @@
 /node_modules/
-/public/
 /public/pdp/
 /public/upload/
 /public/ckeditor/
+/public/axios/
+/public/bootstrap/
+/public/client-dist/
+/public/font-awesome/
+/public/images/
+/public/js/axios/
+
+
+
+
