@@ -10,17 +10,16 @@ const homepage = async(req, res) => {
     if(req.user){
 
         const categories = await Category.findAll()
-        const posts = await Posts.findAll({ order: [['createdAt', 'DESC']],include: Users}, {limit : 6})
 
-        for(item of posts){
-            console.log(item.createdAt);
-        }
+        const posts = await Posts.findAll({ order: [['createdAt', 'DESC']],include: Users}, {limit : 6})
 
         const notifications =  await Notification.findAll({
             where : {FollowedId : req.user.id },
             order: [['createdAt', 'DESC']],
             include : Users
         })
+
+        console.log(notifications);
     
         for(item of notifications){
     
@@ -49,7 +48,6 @@ const homepage = async(req, res) => {
       
         const categories = await Category.findAll()
         const posts = await Posts.findAll({ order: [['createdAt', 'DESC']],include: Users}, {limit : 6})
-
 
         const date = new Date();
 
@@ -89,7 +87,7 @@ const header = async (req, res) =>{
 
     const categories = await Category.findAll()
 
-    // const notifications =  await Notification.findAll({where : {FollowedId : req.user.id}})
+    // const notifications =  await Notification.findAll({where : {UserId : req.user.id}})
     // let nb_notif = notifications.length
 
     // let annee = []

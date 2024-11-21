@@ -3,7 +3,11 @@
     <div class="row" style="margin-top: 20px;">
         <div class="col">
             <div class="profil-user">
-                <img src="/pdp/<%= profil_user.pdp %>"  alt="">
+                <% if(profil_user.pdp){%>
+                    <img src="/pdp/<%= profil_user.pdp %>"  alt="">
+                    <% }else{ %>
+                        <img src="/images/default.jpg" alt="">
+                    <% } %>
             </div>
             <h3><%= profil_user.username %></h3>
             <input type="hidden" id="user_followed" value="<%= profil_user.id %>">

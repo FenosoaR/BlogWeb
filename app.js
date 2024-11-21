@@ -58,7 +58,7 @@ app.use(passport.session())
 
 app.use('/' ,  HomeRoute)
 app.use('/',SecurityRoute)
-app.use('/' ,ensureAuthenticated, PostRoute )
+app.use('/', PostRoute )
 app.use('/' ,ensureAuthenticated, ProfilRoute)
 
 //jerena hoe misy olona connecter ve ao amle site
@@ -114,16 +114,16 @@ io.on('connection', (socket) => {
         const userId = data.UserId;
         const PostId = data.id
 
-        // console.log(UserId , data , room);
         const user = await Users.findOne({ where: { id: userId } });
         // Récupérez les followers de cet utilisateur 
         // const followers = await Follow.findAll({where : {FollowedId : userId} , include : Users})
         const followerss = await Notification.findAll({where : {FollowedId : userId , name : "Follow"} , include : Users})
 
-        // console.log(followers);
+        console.log(followerss);
 
         for(item of followerss){
 
+            console.log(item)
             const receiver = item.UserId.toString()
 
             socket.to(receiver).emit('new_post' , user)

@@ -3,7 +3,7 @@
   <div class="row write">   
       <div class="col-lg-8">
         <form action="/write" method="post" enctype="multipart/form-data" class="form">
-          <input type="hidden" name="UserId" value="<%= user.id %>" id="user"> 
+          <input type="hidden" name="UserId" value="<%= user.id %>" id="userPost"> 
           <div class="form-group">
                 <input type="text" placeholder="Title" name="title" class="form-control" id="title">
           </div>
@@ -14,26 +14,20 @@
             <input type="file"  name="file" id='file' class="form-control"/>
           </div>
           <div class="form-group">
-               <button  class="form-control ">Write</button>
+               <button  class="form-control ">Ecrire un article</button>
           </div>         
       </div>
       <div class="col-lg-4">    
         <div class="category">
           <h4>Categories</h4>
-          <select name="categories" id="category">
-            <% for (item of categories) { %>
-              <div class="form-group">
-                <option value="<%= item.id %>"><%= item.name %></option>
-              </div>
-            <% } %>
-          </select>
-        </div>      
+          <% for(item of categories){ %>
+            <div class="form-group">
+              <input type="radio"  id='category' name="categories" value="<%= item.id %>">      <span><%= item.name %> </span>
+            </div>           
+          <% } %> 
+        </div>     
       </div>
     </form>
   </div>
 </div>
-
-
-
-
 <%- include('component/footer') %>

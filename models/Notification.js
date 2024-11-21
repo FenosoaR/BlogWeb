@@ -1,5 +1,8 @@
 module.exports = (sequelize , datatype) =>{
     return sequelize.define('Notification' , {
+        UserId:{
+            type:datatype.INTEGER
+        },
         FollowedId:{
             type:datatype.INTEGER
         },

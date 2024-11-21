@@ -18,12 +18,12 @@ Notification.belongsTo(Users)
 const profil = async (req, res) => {
     
     const categories = await Category.findAll()
-    const posts = await Posts.findAll({ where: { UserId: req.user.id } })
+    const posts = await Posts.findAll({ where: { UserId: req.user.id },  order: [['createdAt', 'DESC']]})
     let nb_posts = posts.length
 
-    const follow = await Follow.findAll({ where: { FollowedId: req.user.id } })
+    const followers = await Follow.findAll({ where: { FollowedId: req.user.id } , include : Users})
 
-    let nb_follow = follow.length
+    let nb_follow = followers.length
 
     const date = new Date();
 
@@ -52,7 +52,7 @@ const profil = async (req, res) => {
 
     }
 
-    return res.render('profil', {  dateDePub,categories, user: req.user,notifications, posts, nb_posts, nb_follow , annee})
+    return res.render('profil', {  dateDePub,categories, user: req.user,notifications, posts, nb_posts, nb_follow , annee, followers})
 }
 const otherProfil = async (req, res) => {
 
@@ -259,12 +259,20 @@ const listeFollowers = async(req, res) => {
 
     return res.render('listeFollowers' , {followers , categories , user : req.user, annee })
 }
+
 const postphoto = async(req, res)=>{
 
-    const pdp = req.files.pdp
+    const pdp = req.files ? req.files.pdp : null;
 
-    let ext = path.extname(pdp.name)
-    let newFilename = `FILE-${Date.now()}${ext}`
+    if(pdp === null){
+
+        req.flash('error' , 'Veuillez insérer une photo')
+        return res.redirect('/profil');
+
+
+    }else{
+        let ext = path.extname(pdp.name)
+       let newFilename = `FILE-${Date.now()}${ext}`
 
     pdp.mv(`public/pdp/${newFilename}` , (error)  =>{
         if(error){
@@ -286,7 +294,10 @@ const postphoto = async(req, res)=>{
 
     await Users.update(user , {where : {email :req.user.email}})
     
-    return res.redirect('/')
+    return res.redirect('/profil')
+    }
+
+    
     
 }
 

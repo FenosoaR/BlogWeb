@@ -3,6 +3,7 @@ const path = require('path')
 const {Op} =require('sequelize')
 const moment = require('moment')
 const {dateDePub} = require('../libs/datePub')
+const DOMPurify = require('dompurify');
 
 
 
@@ -66,6 +67,7 @@ const postwrite = async(req, res)=>{
     let error = []
     const {title , content , categories , UserId} = req.body
     
+
     let file = null
     if (req.files && req.files.file) {
         file = req.files.file;
@@ -215,24 +217,31 @@ const single = async(req, res) =>{
         annee.push(index)
                 
     }
+    
+    if(req.user){
+        const notifications =  await Notification.findAll({
+            where : {FollowedId : req.user.id },
+            order: [['createdAt', 'DESC']],
+            include : Users
+        })
+    
+        for(item of notifications){
+    
+            const maintenant = moment();
+      
+            const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+    
+            item.publier = differenceEnSecondes
+    
+        }
+    return res.render('single' , {notifications, dateDePub ,categories , user :req.user , single, postlike,nbLike,posts,allComments, differenceEnSecondes, date_publication, likes, annee})
 
-    const notifications =  await Notification.findAll({
-        where : {FollowedId : req.user.id },
-        order: [['createdAt', 'DESC']],
-        include : Users
-    })
-
-    for(item of notifications){
-
-        const maintenant = moment();
-  
-        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
-
-        item.publier = differenceEnSecondes
+    
+    }else{
+        return res.render('single' , {dateDePub ,categories , user :req.user , single, postlike,nbLike,posts,allComments, differenceEnSecondes, date_publication, likes, annee})
 
     }
-
-    return res.render('single' , {notifications, dateDePub ,categories , user :req.user , single, postlike,nbLike,posts,allComments, differenceEnSecondes, date_publication, likes, annee})
+   
 }
 
 const search = async(req, res) =>{
@@ -424,8 +433,30 @@ const postParCategory = async(req, res)=>{
             annee.push(index)
             
     }
+    if(req.user){
+        const notifications =  await Notification.findAll({
+            where : {FollowedId : req.user.id },
+            order: [['createdAt', 'DESC']],
+            include : Users
+        })
+    
+        for(item of notifications){
+    
+            const maintenant = moment();
+      
+            const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+    
+            item.publier = differenceEnSecondes
+    
+        }
+      return res.render('categorypost' , {categories , posts , user :req.user , category, dateDePub, annee,notifications})
 
-    return res.render('categorypost' , {categories , posts , user :req.user , category, dateDePub, annee})
+    }else{
+      return res.render('categorypost' , {categories , posts , user :req.user , category, dateDePub, annee})
+
+    }
+   
+
 
     } catch (error) {
 
