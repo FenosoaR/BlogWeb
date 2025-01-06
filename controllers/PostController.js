@@ -24,7 +24,8 @@ LikeComment.belongsTo(Comment)
 
 const write = async(req, res) =>{
 
-    const categories = await Category.findAll()
+    if(req.user){
+        const categories = await Category.findAll()
 
     const followers = await Follow.findAll({where : {FollowedId : req.user.id}})
 
@@ -57,6 +58,9 @@ const write = async(req, res) =>{
 
 
     return res.render('write' , {categories , user:req.user , dateDePub, followers, annee, notifications})
+    }
+
+    
 }
 
 const postwrite = async(req, res)=>{
@@ -66,7 +70,6 @@ const postwrite = async(req, res)=>{
         
     let error = []
     const {title , content , categories , UserId} = req.body
-    
 
     let file = null
     if (req.files && req.files.file) {
