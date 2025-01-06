@@ -67,7 +67,12 @@
                     <% if(item.lu){ %>
                         <div class="notif_lu pointer">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
+                                
                             </div>
                            <p id="profils" class="left"><%= item.User.dataValues.username %>  vous suit</p>  
                            <input type="hidden" value="<%= item.User.dataValues.id %>"  id="user">  
@@ -92,7 +97,11 @@
                     <% } else { %>
                         <div class="notif_non_lu ">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                            <p id="profils" class="left" ><%= item.User.dataValues.username %>  vous suit</p> 
                            <input type="hidden" value="<%= item.User.dataValues.id %>"  id="user">  
@@ -122,7 +131,11 @@
     
                         <div class="notif_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p id="posts" class="left" ><%= item.User.dataValues.username %>  a posté un nouveau article </p>
                             <input type="hidden" value="<%= item.TargetId %> "> 
@@ -149,7 +162,11 @@
                        
                         <div class="notif_non_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                                 <p id="posts" class="left"><%= item.User.dataValues.username %> a posté un nouveau article </p>
                                 <input type="hidden" value="<%= item.TargetId %>"> 
@@ -179,7 +196,11 @@
                     <% if(item.lu == true){ %>
                         <div class="notif_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p id="likes" class="left" ><%= item.User.dataValues.username %>  a aimé votre article </p> 
                             <input type="hidden" value="<%= item.TargetId %> ">  
@@ -202,7 +223,11 @@
                     <% } else { %>
                         <div class="notif_non_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p id="likes" class="left"><%= item.User.dataValues.username %>  a aimé votre article </p> 
                             <input type="hidden" value="<%= item.TargetId %> "> 
@@ -230,7 +255,11 @@
                     <% if(item.lu == true){ %>
                         <div class="notif_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p id="comments" class="left"><%= item.User.dataValues.username %> a aimé votre commentaire </p>
                             <input type="hidden" value="<%= item.TargetId %> ">  
@@ -253,7 +282,11 @@
                     <% } else { %>
                         <div class="notif_non_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p id="comments" class="left"><%= item.User.dataValues.username %>  a aimé votre commentaire </p> 
                             <input type="hidden" value="<%= item.TargetId %> "> 
@@ -281,7 +314,11 @@
                     <% if(item.lu == true){ %>
                         <div class="notif_lu">
                              <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p class="left" id="newComment" ><%= item.User.dataValues.username %> a commenté votre article </p>
                             <input type="hidden" value="<%= item.TargetId %> ">  
@@ -304,7 +341,11 @@
                     <% } else { %>
                         <div class="notif_non_lu">
                             <div class="profil">
-                                <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% if(user.pdp){ %>
+                                    <img src="/pdp/<%= item.User.dataValues.pdp %> " alt="">
+                                <% } else{ %>
+                                    <img src="/images/default.jpg" alt="">
+                                <% } %>
                             </div>
                             <p class="left"  id="newComment" ><%= item.User.dataValues.username %> a commenté votre article </p> 
                             <input type="hidden" value="<%= item.TargetId %> ">  
