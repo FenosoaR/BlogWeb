@@ -417,7 +417,7 @@ a{
     float: right;
 }
 .pop-user{
-    position: absolute;
+    position: fixed;
     width: 250px;
     padding-top: 15px;
     padding-bottom: 15px;

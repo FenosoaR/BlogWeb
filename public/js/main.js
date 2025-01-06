@@ -27,7 +27,6 @@ const newComment = document.querySelectorAll('#newComment')
 const form = document.querySelector('.form')
 const inputTitle = document.getElementById('title')
 const inputContent = document.getElementById('content')
-const inputCategory = document.getElementById('category')
 const inputFile = document.getElementById('file')
 const followers = document.querySelectorAll('#followers')
 const likePost = document.querySelector('.likepost')
@@ -326,66 +325,39 @@ if(listeLikes != null){
     })
 }
 
-if(form != null){
+if (form != null) {
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
 
-    form.addEventListener('submit' , (event)=>{
+        const selectedCategory = document.querySelector('input[name="categories"]:checked');
+        const categoryValue = selectedCategory ? selectedCategory.value : null;
 
-      event.preventDefault()
-      
-      if(inputFile.files[0]){
+        const formdata = new FormData();
+        formdata.append('title', inputTitle.value);
+        formdata.append('content', inputContent.value);
+        formdata.append('categories', categoryValue); 
+        formdata.append('UserId', userPost.value);
 
-          const formdata = new FormData()
-            
-      
-          formdata.append('title' , inputTitle.value)
-          formdata.append('content' , inputContent.value)
-          formdata.append('file' , inputFile.files[0])
-          formdata.append('categories' , inputCategory.value)
-          formdata.append('UserId' , userPost.value)
+        if (inputFile.files[0]) {
+            formdata.append('file', inputFile.files[0]);
+        } else {
+            formdata.append('file', null);
+        }
 
-          axios.post('http://localhost:9000/write' , formdata)
-          .then((res) =>{
+        axios
+            .post('http://localhost:9000/write', formdata)
+            .then((res) => {
+                let data = res.data.newPost;
+                let UserId = user.value;
 
-         
-          let data = res.data.newPost
-         
-          let UserId = user.value
-      
-          socket.emit('new_post', data)
+                socket.emit('new_post', data);
 
-          window.location.href = '/'
-         
-        })
-        .catch(e => console.log(e))
-          
-      }else{
-
-           const formdata = new FormData()
-            
-      
-          formdata.append('title' , inputTitle.value)
-          formdata.append('content' , inputContent.value)
-          formdata.append('file' , null)
-          formdata.append('categories' , inputCategory.value)
-          formdata.append('UserId' , user.value)
-
-          axios.post('http://localhost:9000/write' , formdata)
-         .then((res) =>{
-
-         
-          let data = res.data.newPost
-         
-          let UserId = user.value
-      
-          socket.emit('new_post', data)
-
-          window.location.href = '/'
-        })
-        .catch(e => console.log(e))
-       }    
-    })
-  
+                window.location.href = '/';
+            })
+            .catch((e) => console.log(e));
+    });
 }
+
 
 if(likePost != null){
 
