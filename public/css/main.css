@@ -1,11 +1,18 @@
+:root {
+    --bg-color: #f2f2f2;
+    --text-color: black;
+  }
 body{
     font-family: 'Times New Roman', Times, serif;
-    background-color: #f2f2f2;
-    /* background-color: black; */
-    color: black;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     /* background: linear-gradient(90deg,rgb(130, 197, 179),rgb(98, 135, 202),rgb(165, 102, 123));   */
     /* background: linear-gradient(90deg,rgb(142, 122, 151),rgb(90, 99, 116),rgb(179, 153, 160));   */
     /* background: radial-gradient(green , yellow, blue); */
+}
+.dark-mode {
+  --bg-color: black;
+  --text-color: white;
 }
 /* button{
     background: linear-gradient(90deg,rgb(130, 197, 179),rgb(98, 135, 202),rgb(165, 102, 123)); 
@@ -374,7 +381,7 @@ a{
     padding: 15px;
     background-color: lightgray;
     border-bottom: 1px solid grey;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     cursor: pointer;
 }
 .notif_lu{
@@ -382,7 +389,7 @@ a{
     padding: 10px;
     background-color: white;
     border-bottom: 1px solid grey;
-    border-radius: 5px;
+    /* border-radius: 5px; */
     cursor: pointer;
     
 }
@@ -539,7 +546,7 @@ a{
     margin-top: -20px;
 }
 .pop-notif{
-    position: absolute;
+    position: fixed;
     left: 77%;
     top: 44.4px;
     width: 309px;
