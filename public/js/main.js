@@ -49,9 +49,6 @@ const user = document.getElementById('user')
 
 const socket = io();
 
-
-
-
 if(listeFollowers != null){
     listeFollowers.addEventListener('click' , function(e){
         popListeFollowers.style.display = 'block'
@@ -540,9 +537,20 @@ if(room != null){
    
             notificationLink.style.color = 'red'
 
-            const p = document.createElement('p')
-            p.innerText = user.username+' vous suit '
-            messageBar.append(p)
+            // const p = document.createElement('p')
+            // p.innerText = user.username+' vous suit '
+            // messageBar.prepend(p)
+
+            const notificationHTML = `
+            <div class="notif_non_lu">
+            <div class="profil">
+                <img src="${user.pdp ? `/pdp/${user.pdp}` : '/images/default.jpg'}" alt="">
+            </div>
+            <p id="likes" class="left">${user.username} vous suit</p>
+            </div>
+        `;
+        messageBar.insertAdjacentHTML('afterbegin', notificationHTML);
+            
         
     });
 
@@ -555,7 +563,7 @@ if(room != null){
 
         const p = document.createElement('p')
         p.innerText = user.username+' a posté un nouveau article '
-        messageBar.append(p) 
+        messageBar.prepend(p) 
 
     })
 
@@ -567,7 +575,7 @@ if(room != null){
 
         const p = document.createElement('p')
         p.innerText = user.username+' a aimé votre article '
-        messageBar.append(p)     
+        messageBar.prepend(p)     
     })
 
     socket.emit('comment_room' , roomName)
@@ -578,7 +586,7 @@ if(room != null){
 
         const p = document.createElement('p')
         p.innerText = user.username+' a aimé votre commentaire'
-        messageBar.append(p)
+        messageBar.prepend(p)
         
     })
 
@@ -590,7 +598,7 @@ if(room != null){
 
         const p = document.createElement('p')
         p.innerText = user.username+' a commenté votre article '
-        messageBar.append(p)
+        messageBar.prepend(p)
     })
 
 }
