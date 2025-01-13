@@ -459,13 +459,14 @@ a{
   width: 350px;
   height: 150px;
   border-radius: 5px;
-  background-color: white;
   padding: 20px;
   display: none;
   color: grey;
   /* animation: 0.5s ease-in-out scale; */
   text-align: center;
   z-index: 7;
+  background-color: #f2f2f2;
+  box-shadow: 1px 1px 1px 1px grey;
 }
 .pop-photo button{
     border: 1px solid lightgray;
@@ -486,12 +487,13 @@ a{
 .modif-profil{
     width : 35%;
     padding: 15px;
-    background-color: white;
     position: absolute;
     top: 22%;
     left: 30%;
     display: none;
     border-radius: 5px;
+    background-color: #f2f2f2;
+    box-shadow: 1px 1px 1px 1px grey;
 }
 .modif-profil i{
   float: right;
@@ -511,14 +513,13 @@ a{
 }
 .pop-bar{
     position: absolute;
-    top: 5%;
-    width: 150px;
-    height: 70px;
+    top: 2%;
+    width: 155px;
     background-color: white;
     box-shadow: 1px 1px 1px grey;
     left: 72%;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
     display: none;
 }
 .pop-bar i{
