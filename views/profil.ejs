@@ -42,7 +42,7 @@
     <div class="col-lg-6">
       <% for(item of posts){ %>
       <div class="post-profil">
-        <h2><%= item.title %></h2>
+        <h4><%= item.title %></h4>
         <div class="modif">
           <i class="fa fa-bars" id="<%= item.id %>"></i>
         </div>
@@ -54,8 +54,8 @@
         <div class="pop-bar" id="pop-bar-<%= item.id %>">
           <i class="fa fa-close" id="close-pop-bar-<%= item.id %>"></i>
           <div>
-            <a href="/edit/<%= item.id %>">Modifier l'article</a><br />
-            <a href="/delete/<%= item.id %>">Effacer l'article</a>
+           <a href="/edit/<%= item.id %>">Modifier l'article</a><br />
+          <a href="/delete/<%= item.id %>">Effacer l'article</a>
           </div>
         </div>
         <hr />
