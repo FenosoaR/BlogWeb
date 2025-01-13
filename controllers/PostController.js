@@ -255,66 +255,107 @@ const search = async(req, res) =>{
     const categories = await Category.findAll()
     const category =  await Category.findOne({where :{ name : search }})
 
-    const notifications =  await Notification.findAll({
-        where : {FollowedId : req.user.id },
-        order: [['createdAt', 'DESC']],
-        include : Users
-    })
-
-    for(item of notifications){
-
-        const maintenant = moment();
-  
-        const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
-
-        item.publier = differenceEnSecondes
-
-    }
-
     const date = new Date();
 
     const yearNow = date.getFullYear()
-
+    
     let annee = []
-
+    
     for (let index = yearNow + 1; index > 2015 ; index--) {
-            annee.push(index)
-            
+                annee.push(index)
+                
     }
 
-    if(category){
-
-         posts = await Posts.findAll({
-
-            where:{
-                
-                    CategoryId : category.id
-                },
+    if(req.user){
+        const notifications =  await Notification.findAll({
+            where : {FollowedId : req.user.id },
+            order: [['createdAt', 'DESC']],
             include : Users
-            
-            
         })
+    
+        for(item of notifications){
+    
+            const maintenant = moment();
+      
+            const differenceEnSecondes = maintenant.diff(item.createdAt, 'seconds');
+    
+            item.publier = differenceEnSecondes
+    
+        }
 
-        return res.render('categorypost' , {categories ,notifications, posts , user:req.user , category, dateDePub, annee})
         
+    
+        if(category){
+    
+             posts = await Posts.findAll({
+    
+                where:{
+                    
+                        CategoryId : category.id
+                    },
+                include : Users
+                
+                
+            })
+    
+            return res.render('categorypost' , {categories ,notifications, posts , user:req.user , category, dateDePub, annee})
+            
+        }else{
+    
+            posts = await Posts.findAll({
+                where : {
+                    [Op.or] : [
+                        {
+                            title : {[Op.like] : `%${search}%`}
+                        },
+                        {
+                            content : {[Op.like] : `%${search}%`}
+                        }
+                    ]
+                }, include : Users
+            })
+    
+            return res.render('homepage' , {categories ,notifications, posts , user:req.user , dateDePub, annee})
+    
+        }
+    
     }else{
 
-        posts = await Posts.findAll({
-            where : {
-                [Op.or] : [
-                    {
-                        title : {[Op.like] : `%${search}%`}
-                    },
-                    {
-                        content : {[Op.like] : `%${search}%`}
-                    }
-                ]
-            }, include : Users
-        })
-
-        return res.render('homepage' , {categories ,notifications, posts , user:req.user , dateDePub, annee})
-
+        if(category){
+    
+            posts = await Posts.findAll({
+   
+               where:{
+                   
+                       CategoryId : category.id
+                   },
+               include : Users
+               
+               
+           })
+   
+           return res.render('categorypost' , {categories , posts , user:req.user , category, dateDePub, annee})
+           
+       }else{
+   
+           posts = await Posts.findAll({
+               where : {
+                   [Op.or] : [
+                       {
+                           title : {[Op.like] : `%${search}%`}
+                       },
+                       {
+                           content : {[Op.like] : `%${search}%`}
+                       }
+                   ]
+               }, include : Users
+           })
+   
+           return res.render('homepage' , {categories , posts , user:req.user , dateDePub, annee})
+   
+       }
     }
+  
  
 }
 
