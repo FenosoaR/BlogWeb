@@ -45,7 +45,7 @@ const closeModifProfil = document.querySelector('.close-modif-profil')
 const listeFollowers = document.getElementById('liste-followers')
 const popListeFollowers = document.querySelector('.pop-liste-followers')
 const closeFollowers = document.querySelector('.closeFollowers')
-const user = document.getElementById('user')
+const otherProfilUser = document.getElementById('other_profil_user')
 
 const socket = io();
 
@@ -137,22 +137,23 @@ if(profils != null){
 
         if(notif_non_lu){
 
-            let userId = user.value
+            let otherProfilUserId = otherProfilUser.value
+ 
 
             notif_non_lu.classList.toggle('notif_lu')
 
             let roomName = room.value
             socket.emit('set-lu' , roomName)
 
-            window.location.href = `/otherProfil/${userId}`
+            window.location.href = `/otherProfil/${otherProfilUserId}`
 
         }
 
         if(notif_lu){
 
-            let userId = user.value
+            let otherProfilUserId = otherProfilUser.value
 
-            window.location.href = `/otherProfil/${userId}`
+            window.location.href = `/otherProfil/${otherProfilUserId}`
         }
       
         
